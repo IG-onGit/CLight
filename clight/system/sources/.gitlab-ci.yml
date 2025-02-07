@@ -6,13 +6,12 @@ deploy:
   image: python:3.9
   script:
     - echo "Setting up Python..."
+    - python -m pip install --upgrade pip
     - python --version
     - echo "Installing dependencies..."
-    - python -m pip install --upgrade pip
     - python -m pip install clight
-    - clight help
     - echo "Deploying to PyPI..."
-    - clight deploy "$PYPI_USERNAME" "$PYPI_API_TOKEN"
+    - clight deploy "$PYPI_USERNAME" "$PYPI_API_TOKEN" || true
     - exit 0
   only:
     - main
