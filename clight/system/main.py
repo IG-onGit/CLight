@@ -445,7 +445,7 @@ class main:
         gitignore = os.path.join(project, ".gitignore")
         if os.path.exists(gitignore):
             lines = open(gitignore, "r", encoding="utf-8").read().strip().splitlines()
-            newlines = [f"{self.params["CMD"]}/{line}" for line in lines]
+            newlines = [f'{self.params["CMD"]}/{line}' for line in lines]
             open(gitignore, "w", encoding="utf-8").writelines(newlines)
             shutil.move(gitignore, package)
 
