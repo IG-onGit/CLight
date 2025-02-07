@@ -13,7 +13,7 @@ class main:
 
         index = file.replace("\\", "/")
         command = f'clight execute "{index}" {args}'
-        subprocess.run(command, shell=True, check=True)
+        subprocess.run(command, shell=True)
         pass
 
 

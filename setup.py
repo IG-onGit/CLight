@@ -1,0 +1,62 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="clight",
+    version="1.0.0",
+    packages=find_packages(),
+    install_requires=[
+        "inquirer",
+        "datetime",
+        "importlib",
+        "colored",
+        "cryptography",
+    ],
+    entry_points={
+        "console_scripts": [
+            "clight=clight.system.main:main",  # Entry point of the app
+        ],
+    },
+    package_data={
+        "clight": [
+            "licenses/Apache License",
+            "licenses/BSD 3-Clause License",
+            "licenses/GNU AFFERO GENERAL PUBLIC LICENSE",
+            "licenses/GNU GENERAL PUBLIC LICENSE",
+            "licenses/GNU LESSER GENERAL PUBLIC LICENSE",
+            "licenses/ISC License",
+            "licenses/MIT License",
+            "licenses/Mozilla Public License",
+            "package/.placeholder",
+            "skeleton/.gitignore",
+            "skeleton/.system/imports.py",
+            "skeleton/.system/index.py",
+            "skeleton/.system/modules/jobs.py",
+            "skeleton/.system/sources/logo.ico",
+            "system/importer.py",
+            "system/main.py",
+            "system/modules/cli.py",
+            "system/sources/.gitlab-ci.yml",
+            "system/sources/logo.ico",
+            "system/sources/main.py",
+            "system/sources/README.md",
+            "system/sources/setup.py",
+            "system/sources/__init__.py",
+            "system/sources/{{CMD}}.bat",
+            "system/sources/{{module}}.py",
+            "system/sources/.github/labels.yml",
+            "system/sources/.github/workflows/python-publish.yml",
+        ],
+    },
+    include_package_data=True,
+    author="Irakli Gzirishvili",
+    author_email="gziraklirex@gmail.com",
+    description="CLight is a Python command-line interface application. A lightweight Framework that simplifies CLI app development and the package distribution process, with automatic deployment strategies from Local, GitHub and GitLab environments.",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
+    url="https://github.com/IG-onGit/CLight",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: Microsoft :: Windows",
+    ],
+)

@@ -1,7 +1,8 @@
 __pycache__
 desktop.ini
-.system/sources/.pypi
-catalog/*
-!catalog/.placeholder
-package/*
-!package/.placeholder
+clight/system/sources/.pypi
+clight/package/*
+!clight/package/.placeholder
+clight.egg-info
+build
+dist

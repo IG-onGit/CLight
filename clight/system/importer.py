@@ -9,6 +9,7 @@ import json
 import signal
 import shutil
 import base64
+import ctypes
 import hashlib
 import pkgutil
 import builtins
@@ -20,4 +21,4 @@ import subprocess
 import winreg as reg
 from colored import fg, bg, attr  # pip
 from cryptography.fernet import Fernet
-from modules.cli import cli
+from clight.system.modules.cli import cli

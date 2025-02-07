@@ -1,12 +1,12 @@
-from importer import *
-
-# NOW: method - publish <local/github/gitlab>
-# NOW: rebase DociPy to CLight
+from clight.system.importer import *
 
 
 class main:
     ####################################################################################// Load
     def __init__(self):
+        self.catalog = f"C:/Users/{os.getlogin()}/.clight"
+        os.makedirs(self.catalog, exist_ok=True)
+
         self.args = sys.argv[1:]
         self.project = self.__projectDir()
         self.frame = self.__loadEnvironment()
@@ -44,9 +44,8 @@ class main:
         open(self.config, "w").write(json.dumps(config))
 
         config["index"] = os.path.join(self.project, ".system/index.py")
-        location = os.path.join(self.frame, "catalog")
 
-        if not self.__renderTemplate("{{CMD}}.bat", config, location):
+        if not self.__renderTemplate("{{CMD}}.bat", config, self.catalog):
             return "Failed to register CMD!"
 
         index = os.path.join(self.frame, "skeleton/.system/index.py")
@@ -120,9 +119,8 @@ class main:
         return "Params updated"
 
     def all(self):  # List existing projects
-        catalog = os.path.join(self.frame, "catalog")
         collect = []
-        for item in os.listdir(catalog):
+        for item in os.listdir(self.catalog):
             if item and item != ".placeholder":
                 collect.append(item[:-4].strip())
         return "\n".join(collect)
@@ -165,7 +163,7 @@ class main:
         if item not in self.all().splitlines():
             return "Invalid project name!"
 
-        bat = os.path.join(self.frame, "catalog", f"{item}.bat")
+        bat = os.path.join(self.catalog, f"{item}.bat")
         index = self.__detectIndex(item)
         config = os.path.join(os.path.dirname(index), "sources/clight.json")
 
@@ -177,7 +175,7 @@ class main:
         return "Project removed"
 
     def pypidel(self):  # Delete PyPI credentials
-        pypi = os.path.join(self.frame, ".system/sources/.pypi")
+        pypi = os.path.join(self.frame, "system/sources/.pypi")
         if not os.path.exists(pypi):
             return "There is no saved credentials!"
 
@@ -258,7 +256,7 @@ class main:
         return decrypted_text.decode("utf-8")
 
     def __getCredentials(self):
-        pypi = os.path.join(self.frame, ".system/sources/.pypi")
+        pypi = os.path.join(self.frame, "system/sources/.pypi")
         if os.path.exists(pypi):
             encrypted = open(pypi, "r", encoding="utf-8").read()
             password = self.__input("Password Key", [], True)
@@ -290,11 +288,11 @@ class main:
         if rtype == "Local":
             return True
         elif rtype == "GitHub":
-            github_src = os.path.join(self.frame, ".system/sources/.github")
+            github_src = os.path.join(self.frame, "system/sources/.github")
             os.makedirs(github, exist_ok=True)
             self.__cloneSkeleton(github_src, github)
         elif rtype == "GitLab":
-            gitlab_scr = os.path.join(self.frame, ".system/sources/.gitlab-ci.yml")
+            gitlab_scr = os.path.join(self.frame, "system/sources/.gitlab-ci.yml")
             shutil.copy(gitlab_scr, gitlab)
 
         return True
@@ -485,7 +483,7 @@ class main:
             cli.error("Invalid index cmd")
             return ""
 
-        bat = os.path.join(self.frame, "catalog", f"{cmd}.bat")
+        bat = os.path.join(self.catalog, f"{cmd}.bat")
         if not os.path.exists(bat):
             cli.error("Invalid catalog file")
             return ""
@@ -508,6 +506,7 @@ class main:
             self.params = {
                 "Name": "CLight",
                 "Version": "1.0",
+                "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
             }
@@ -604,8 +603,7 @@ class main:
 
     def __loadEnvironment(self):
         frame = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-        path = os.path.join(frame, "catalog")
-        if not os.path.exists(path):
+        if not os.path.exists(self.catalog):
             cli.error("Invalid catalog path")
             return frame
 
@@ -616,15 +614,16 @@ class main:
         current, _ = reg.QueryValueEx(system, "PATH")
         existing = current.split(";")
 
-        if path in existing:
+        if self.catalog in existing:
             return frame
 
-        current += os.pathsep + path
+        current += os.pathsep + self.catalog
         reg.SetValueEx(system, "PATH", 0, reg.REG_EXPAND_SZ, current)
 
         cli.info("Environment setup ...")
-        cli.done("Please restart your CMD")
-        return frame
+        cli.done("Please restart your CMD!")
+        sys.exit()
+        pass
 
     def __loadCommand(self, index="", object=None, args=[]):
         if len(args) == 0:
@@ -658,7 +657,7 @@ class main:
         if not name or not os.path.exists(location):
             return False
 
-        file = os.path.join(self.frame, ".system/sources", name)
+        file = os.path.join(self.frame, "system/sources", name)
         if not os.path.exists(file):
             return False
 
@@ -749,5 +748,4 @@ class main:
 
 
 if __name__ == "__main__":
-
-    main()
+    app = main()
