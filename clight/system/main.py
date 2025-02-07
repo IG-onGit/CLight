@@ -230,6 +230,7 @@ class main:
         self.__preparePackage(package)
 
         os.chdir(package)
+        subprocess.run("pip install setuptools wheel twine", shell=True, check=True)
         subprocess.run("python setup.py sdist bdist_wheel", shell=True, check=True)
         subprocess.run(
             f'twine upload dist/* -u "{username}" -p "{token}" --verbose',
