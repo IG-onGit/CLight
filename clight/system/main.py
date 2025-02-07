@@ -410,7 +410,7 @@ class main:
         collect = []
         for item in modules:
             item = item.split(".")[0].strip()
-            if "importer" in item:
+            if "clight" in item:
                 continue
             path = os.path.join(project, ".system", item)
             if os.path.exists(path):
