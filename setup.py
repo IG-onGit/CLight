@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="clight",
-    version="1.1.2",
+    version="1.1.3",
     packages=find_packages(),
     install_requires=[
         "inquirer",
@@ -17,14 +17,14 @@ setup(
     },
     package_data={
         "clight": [
-            "licenses/Apache License",
-            "licenses/BSD 3-Clause License",
-            "licenses/GNU AFFERO GENERAL PUBLIC LICENSE",
-            "licenses/GNU GENERAL PUBLIC LICENSE",
-            "licenses/GNU LESSER GENERAL PUBLIC LICENSE",
-            "licenses/ISC License",
+            "licenses/Apache Software License",
+            "licenses/BSD License",
+            "licenses/GNU Affero General Public License v3",
+            "licenses/GNU General Public License v3 (GPLv3)",
+            "licenses/GNU Lesser General Public License v3 (LGPLv3)",
+            "licenses/ISC License (ISCL)",
             "licenses/MIT License",
-            "licenses/Mozilla Public License",
+            "licenses/Mozilla Public License 2.0 (MPL 2.0)",
             "package/.placeholder",
             "skeleton/.gitignore",
             "skeleton/.system/imports.py",
