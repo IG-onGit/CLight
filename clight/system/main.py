@@ -510,7 +510,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "1.0",
+                "Version": "1.1",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
@@ -627,20 +627,12 @@ class main:
 
             current += os.pathsep + self.catalog
             reg.SetValueEx(system, "PATH", 0, reg.REG_EXPAND_SZ, current)
-        else:
-            current = os.getenv("PATH", "")
-            existing = current.split(os.pathsep)
 
-            if self.catalog in existing:
-                return frame
+            cli.info("Environment setup ...")
+            cli.done("Please restart your CMD!")
+            sys.exit()
 
-            current += os.pathsep + self.catalog
-            os.environ["PATH"] = current
-
-        cli.info("Environment setup ...")
-        cli.done("Please restart your CMD!")
-        sys.exit()
-        pass
+        return frame
 
     def __loadCommand(self, index="", object=None, args=[]):
         if len(args) == 0:
