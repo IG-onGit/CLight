@@ -149,7 +149,7 @@ class main:
             subprocess.run("pip install setuptools wheel twine", shell=True, check=True)
             subprocess.run("python setup.py sdist bdist_wheel", shell=True, check=True)
             subprocess.run(
-                f'twine upload dist/* -u "{credentials['username']}" -p "{credentials['token']}" --verbose',
+                f'twine upload dist/* -u "{credentials["username"]}" -p "{credentials["token"]}" --verbose',
                 shell=True,
             )
             pass
