@@ -5,7 +5,7 @@ setup(
     version="{{Version}}",
     packages=find_packages(),
     install_requires=[
-        # "clight",
+        "clight",
         {{install}}
     ],
     entry_points={
