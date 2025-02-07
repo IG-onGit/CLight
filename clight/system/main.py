@@ -4,7 +4,7 @@ from clight.system.importer import *
 class main:
     ####################################################################################// Load
     def __init__(self):
-        self.catalog = f"C:/Users/{os.getlogin()}/.clight"
+        self.catalog = os.path.join(self.__userDir(), ".clight")
         os.makedirs(self.catalog, exist_ok=True)
 
         self.args = sys.argv[1:]
@@ -242,6 +242,12 @@ class main:
         return "Project published"
 
     ####################################################################################// Helpers
+    def __userDir(self):
+        if platform.system() == "Windows":
+            return os.getenv("USERPROFILE")
+
+        return os.getenv("HOME")
+
     def __encrypt(self, text="", key=""):
         sha256_hash = hashlib.sha256(key.encode("utf-8")).digest()
         base64_key = base64.urlsafe_b64encode(sha256_hash)
