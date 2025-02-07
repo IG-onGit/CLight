@@ -115,18 +115,18 @@ When creating a project with **CLight**, you should specify the OS environment f
 
 - **Local** - Publishing projects from your local development Windows environment to PyPI
 
-      1. Navigate to your project's root directory using CMD and run `clight publish`
-      1. If this is your first time, provide your PyPI `PYPI_USERNAME` and `PYPI_API_TOKEN`
-      1. Then choose whether to save your credentials or not
-      1. If you choose to save your credentials, provide a `Password Key` to encrypt them
-      1. That's it. The next time, you will just be asked for the Password Key
+    - Navigate to your project's root directory using CMD and run `clight publish`
+    - If this is your first time, provide your PyPI `PYPI_USERNAME` and `PYPI_API_TOKEN`
+    - Then choose whether to save your credentials or not
+    - If you choose to save your credentials, provide a `Password Key` to encrypt them
+    - That's it. The next time, you will just be asked for the Password Key
 
 - **GitHub** - Automated deployment process to PyPI once you push changes to the main branch
 
-      1. Nothing to do, just push the changes
+    - Nothing to do, just push the changes
 
 - **GitLab** - Automated deployment process to PyPI once you push changes to the main branch
 
-      1. Nothing to do, just push the changes
+    - Nothing to do, just push the changes
 
 > **Note:** You must add PyPI credentials as repository secure variables in GitHub and GitLab with these names: `PYPI_USERNAME` and `PYPI_API_TOKEN`
