@@ -1,0 +1,7 @@
+__pycache__
+desktop.ini
+.system/sources/.pypi
+catalog/*
+!catalog/.placeholder
+package/*
+!package/.placeholder

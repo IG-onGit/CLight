@@ -1,0 +1,20 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: python:3.x
+  script:
+    - pip install --upgrade pip
+    - pip install setuptools wheel twine
+    - python setup.py sdist bdist_wheel
+    - twine upload dist/* -u "${PYPI_USERNAME}" -p "${PYPI_API_TOKEN}" --verbose
+  only:
+    - main
+  environment:
+    name: production
+  secrets:
+    PYPI_USERNAME:
+      vault: secret/my-secrets/pypi-username
+    PYPI_API_TOKEN:
+      vault: secret/my-secrets/pypi-api-token
