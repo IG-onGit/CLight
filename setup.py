@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="clight",
-    version="1.1.1",
+    version="1.1.2",
     packages=find_packages(),
     install_requires=[
         "inquirer",
@@ -43,7 +43,7 @@ setup(
             "system/sources/{{CMD}}.bat",
             "system/sources/{{module}}.py",
             "system/sources/.github/labels.yml",
-            "system/sources/.github/workflows/python-publish.yml",
+            "system/sources/.github/workflows/publish.yml",
         ],
     },
     include_package_data=True,

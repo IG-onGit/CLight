@@ -49,7 +49,7 @@ class main:
             return "Failed to register CMD!"
 
         index = os.path.join(self.frame, "skeleton/.system/index.py")
-        config["Commands"] = self.__help(index, False)
+        config["Commands"] = self.__help(index, config, False)
         folder = os.path.join(self.frame, "skeleton")
 
         self.__cloneSkeleton(folder, self.project)
@@ -102,7 +102,7 @@ class main:
 
         index = os.path.join(self.project, ".system/index.py")
         if update != "-t":
-            self.params["Commands"] = self.__help(index, False)
+            self.params["Commands"] = self.__help(index, self.params, False)
             self.__renderTemplate("README.md", self.params, self.project)
 
             newlicense = self.params["License"]
@@ -567,14 +567,14 @@ class main:
 
         return module
 
-    def __help(self, file="", prints=True):
-        if not os.path.exists(file):
+    def __help(self, file="", params={}, prints=True):
+        if not os.path.exists(file) or not params:
             return ""
 
         content = open(file, "r").read().replace(".*? #", "")
         methods = re.findall(r" def (.*?)\(", content)
         hints = re.findall(r"  def .*? # (.*?)\n", content)
-        cmd = self.params["CMD"]
+        cmd = params["CMD"]
 
         n = 0
         collect = ""
@@ -636,12 +636,12 @@ class main:
 
     def __loadCommand(self, index="", object=None, args=[]):
         if len(args) == 0:
-            self.__help(index)
+            self.__help(index, self.params)
             return True
 
         cmd = args[0]
         if not hasattr(object, cmd) or cmd == "help":
-            self.__help(index)
+            self.__help(index, self.params)
             return True
 
         args = args[1:]
