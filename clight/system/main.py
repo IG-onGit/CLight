@@ -151,7 +151,6 @@ class main:
             subprocess.run(
                 f'twine upload dist/* -u "{credentials['username']}" -p "{credentials['token']}" --verbose',
                 shell=True,
-                check=True,
             )
             pass
 
@@ -235,7 +234,6 @@ class main:
         subprocess.run(
             f'twine upload dist/* -u "{username}" -p "{token}" --verbose',
             shell=True,
-            check=True,
         )
 
         self.__clearFolder(package)
