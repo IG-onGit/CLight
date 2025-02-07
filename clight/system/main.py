@@ -606,18 +606,30 @@ class main:
             cli.error("Invalid catalog path")
             return frame
 
-        key = r"Environment"
-        system = reg.OpenKey(
-            reg.HKEY_CURRENT_USER, key, 0, reg.KEY_READ | reg.KEY_WRITE
-        )
-        current, _ = reg.QueryValueEx(system, "PATH")
-        existing = current.split(";")
+        if platform.system() == "Windows":
+            import winreg as reg
 
-        if self.catalog in existing:
-            return frame
+            key = r"Environment"
+            system = reg.OpenKey(
+                reg.HKEY_CURRENT_USER, key, 0, reg.KEY_READ | reg.KEY_WRITE
+            )
+            current, _ = reg.QueryValueEx(system, "PATH")
+            existing = current.split(";")
 
-        current += os.pathsep + self.catalog
-        reg.SetValueEx(system, "PATH", 0, reg.REG_EXPAND_SZ, current)
+            if self.catalog in existing:
+                return frame
+
+            current += os.pathsep + self.catalog
+            reg.SetValueEx(system, "PATH", 0, reg.REG_EXPAND_SZ, current)
+        else:
+            current = os.getenv("PATH", "")
+            existing = current.split(os.pathsep)
+
+            if self.catalog in existing:
+                return frame
+
+            current += os.pathsep + self.catalog
+            os.environ["PATH"] = current
 
         cli.info("Environment setup ...")
         cli.done("Please restart your CMD!")

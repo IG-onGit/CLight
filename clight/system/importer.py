@@ -15,10 +15,10 @@ import pkgutil
 import builtins
 import inquirer
 import datetime
+import platform
 import sysconfig
 import importlib
 import subprocess
-import winreg as reg
 from colored import fg, bg, attr  # pip
 from cryptography.fernet import Fernet
 from clight.system.modules.cli import cli
