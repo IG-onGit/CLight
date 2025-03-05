@@ -18,6 +18,10 @@ class index:
         # cli.done(param)
         # cli.error(param)
 
+        # text = cli.input("Enter Text", True)
+        # option = cli.selection("Select Option", ["Option 1", "Option 2"])
+        # action = cli.confirmation("Would you like to confirm this action?")
+
         return self.__helper()
 
     ####################################################################################// Helpers
