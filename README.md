@@ -29,6 +29,8 @@ These are the available commands you can use:
 - `clight publish (-t)` - Publish project on PyPI, (-t) to test locally
 - `clight remove (project)` - Remove project
 - `clight pypidel` - Delete PyPI credentials
+- `clight install` - Test the installation process locally
+- `clight uninstall` - Test the uninstallation process locally
 
 ## Rules
 
@@ -68,9 +70,12 @@ When creating your new project, you will be asked to fill a simple form just onc
 5. **CMD** - CMD name alias for your project `required`
 6. **Author** - Author of the project `required`
 7. **Mail** - Mail of the project author `required`
-8. **Repository Type** - Project repository type `required`
-9. **License** - License for your project
-10. **Operating System** - Required operating system for your project `required`
+8. **Project Type** - Type of the project `required`
+9. **Repository Type** - Project repository type `required`
+10. **License** - License for your project
+11. **Operating System** - Required operating system for your project `required`
+
+> **Project Type**: Select `App` to develop a new CLI application, or select `Module` to develop a single pip module
 
 ## Specifying Repository Type
 

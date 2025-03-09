@@ -7,6 +7,7 @@ class main:
         self.catalog = os.path.join(self.__userDir(), ".clight")
         os.makedirs(self.catalog, exist_ok=True)
 
+        self.called = {}
         self.args = sys.argv[1:]
         self.project = self.__projectDir()
         self.frame = self.__loadEnvironment()
@@ -39,6 +40,8 @@ class main:
                 value = self.__input(item, inputs[item])
             config[item] = value
         print()
+
+        config["CMD"] = config["CMD"].replace("-", "_")
 
         os.makedirs(os.path.dirname(self.config), exist_ok=True)
         open(self.config, "w").write(json.dumps(config))
@@ -86,7 +89,7 @@ class main:
         inputs = self.__inputs()
         for name in inputs:
             item = name.replace("!", "")
-            if item == "CMD":
+            if item in ["CMD", "Project Type"]:
                 continue
             options = inputs[name]
             if item == "License":
@@ -124,6 +127,35 @@ class main:
             if item and item != ".placeholder":
                 collect.append(item[:-4].strip())
         return "\n".join(collect)
+
+    def install(self):  # Test the installation process locally
+        if not os.path.exists(self.config):
+            return "Invalid project directory!"
+
+        package = os.path.join(self.frame, "package")
+        project = os.path.join(package, self.params["CMD"])
+        rtype = self.params["Repository Type"]
+
+        self.__clearFolder(package)
+        os.makedirs(project, exist_ok=True)
+        self.__cloneSkeleton(self.project, project, ["\\.github\\", "\\.gitlab-ci.yml"])
+        self.__rebasePackage(package)
+        self.__preparePackage(package)
+
+        os.chdir(package)
+        subprocess.run("pip install .", shell=True, check=True)
+        self.__clearFolder(package)
+
+        return "Project installed"
+
+    def uninstall(self):  # Test the uninstallation process locally
+        if not os.path.exists(self.config):
+            return "Invalid project directory!"
+
+        cmd = self.params["CMD"]
+        subprocess.run(f"pip uninstall -y {cmd}", shell=True, check=True)
+
+        return "Project uninstalled"
 
     def publish(self, test=""):  # (-t) - Publish project on PyPI, (-t) to test locally
         if not os.path.exists(self.config):
@@ -196,6 +228,7 @@ class main:
         if not os.path.exists(config):
             return "Invalid project config file!"
 
+        self.called = json.loads(open(config, "r").read())
         imports = os.path.join(self.project, ".system/imports.py")
         if not os.path.exists(imports):
             return "Invalid project imports!"
@@ -209,7 +242,10 @@ class main:
 
         module = self.__importModule("index", index)
         target = getattr(module, "index")
-        instance = target(self.project, args[2:])
+        instance = target(self.project, os.getcwd(), args[2:])
+        if self.called["Project Type"] == "Module":
+            return "Modules should be imported into the project!"
+
         self.__loadCommand(index, instance, args[1:])
         pass
 
@@ -335,7 +371,35 @@ class main:
 
         self.__renderTemplate("setup.py", self.params, package)
 
+        if "Project Type" in self.params and self.params["Project Type"] == "Module":
+            self.__renderModule(project)
+
         return True
+
+    def __renderModule(self, package=""):
+        donor = os.path.join(self.frame, "system/sources/init.py")
+        open(f"{package}/__init__.py", "w").write(open(donor, "r").read())
+
+        origin = f"{package}/.system"
+        index = f"{origin}/index.py"
+        content1 = (
+            open(index, "r")
+            .read()
+            .replace("from imports import *", "from .imports import *")
+        )
+        open(index, "w").write(content1)
+
+        imports = f"{origin}/imports.py"
+        content2 = (
+            open(imports, "r")
+            .read()
+            .replace("from modules.", "from .modules.")
+            .replace("import modules.", "import .modules.")
+        )
+        open(imports, "w").write(content2)
+
+        new = f"{package}/__system__"
+        os.rename(origin, new)
 
     def __firstLine(self, content=""):
         if not content:
@@ -396,6 +460,11 @@ class main:
                 hint = f'            "{item}"'
                 if hint in collect:
                     continue
+                if (
+                    "Project Type" in self.params
+                    and self.params["Project Type"] == "Module"
+                ):
+                    hint = hint.replace(".system/", "__system__/")
                 collect.append(hint)
 
         return ",\n".join(collect).strip()
@@ -655,7 +724,10 @@ class main:
             else:
                 print(e)
 
-        if result and result[-1:] == "!":
+        if "Project Type" in self.called and self.called["Project Type"] == "Module":
+            cli.error("Modules should be imported into the project")
+            return True
+        elif result and result[-1:] == "!":
             cli.error(result[:-1])
         elif result:
             cli.done(result)
@@ -741,6 +813,10 @@ class main:
             "!CMD": [],
             "!Author": [],
             "!Mail": [],
+            "!Project Type": [
+                "App",
+                "Module",
+            ],
             "!Repository Type": [
                 "Local",
                 "GitHub",
