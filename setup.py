@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="clight",
-    version="1.1.8",
+    version="1.1.9",
     packages=find_packages(),
     install_requires=[
         "inquirer",
@@ -45,6 +45,13 @@ setup(
             "system/sources/{{module}}.py",
             "system/sources/.github/labels.yml",
             "system/sources/.github/workflows/publish.yml",
+            "system/sources/ask.wav",
+            "system/sources/done.wav",
+            "system/sources/error.wav",
+            "system/sources/ready.wav",
+            "system/sources/set.wav",
+            "system/sources/start.wav",
+            "system/sources/unset.wav",
         ],
     },
     include_package_data=True,

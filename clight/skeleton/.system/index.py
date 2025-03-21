@@ -21,6 +21,8 @@ class index:
         # text = cli.input("Enter Text", True)
         # option = cli.selection("Select Option", ["Option 1", "Option 2"])
         # action = cli.confirmation("Would you like to confirm this action?")
+        # ...
+        # Check the 'cli' class for more methods or take a look at the README of 'CLight' - https://github.com/IG-onGit/CLight
 
         return self.__helper()
 

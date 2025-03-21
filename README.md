@@ -30,6 +30,7 @@ These are the available commands you can use:
 - `clight remove (project)` - Remove project
 - `clight pypidel` - Delete PyPI credentials
 - `clight install` - Test the installation process locally
+- `clight update` - Update local installation test
 - `clight uninstall` - Test the uninstallation process locally
 
 ## Rules
@@ -57,7 +58,23 @@ These are basic methods from the `clight` package class called `cli` that you ca
 - `cli.info("message")` - Print an info message in blue
 - `cli.hint("message")` - Print a hint in yellow
 - `cli.done("message")` - Print a completion message in green
-- `cli.done("message", True)` - Print a completion message in green on the same line
+- `cli.input("hint")` - Define CLI input field
+- `cli.selection("hint", ["A", "B"])` - Define selection input field
+- `cli.confirmation("hint")` - Define confirmation input field
+- `cli.value("key", {...}, "default")` - Get value from data
+- `cli.sound("done")` - Set system sound - start, ready, done, error, ask, set or unset
+- `cli.speak("text")` - Read text with voice
+- `cli.listen()` - Listen and convert speech to text
+- `cli.read("Folder/file.txt")` - Read file and get content
+- `cli.write("Folder/file.txt", "content")` - Write file with content
+- `cli.yaml("Folder/file.yaml")` - Read and convert YAML file as dict
+- `cli.template("content", {...})` - Parse template content with given key-value pairs
+- `cli.chars(10)` - Get random characters with given length
+- `cli.isValue(value)` - Check if value exists
+- `cli.isPath(path)` - Check if path exists
+- `cli.isFile(file)` - Check if file exists
+- `cli.isFolder(folder)` - Check if folder exists
+- `cli.execute("cmd", "message")` - Execute CMD command
 
 ## Specifying Parameters
 

@@ -7,6 +7,7 @@ class main:
         self.catalog = os.path.join(self.__userDir(), ".clight")
         os.makedirs(self.catalog, exist_ok=True)
 
+        self.exit = None
         self.called = {}
         self.args = sys.argv[1:]
         self.project = self.__projectDir()
@@ -148,6 +149,13 @@ class main:
 
         return "Project installed"
 
+    def update(self):  # Update local installation test
+        self.uninstall()
+        time.sleep(5)
+        self.install()
+
+        return "Project updated"
+
     def uninstall(self):  # Test the uninstallation process locally
         if not os.path.exists(self.config):
             return "Invalid project directory!"
@@ -242,7 +250,7 @@ class main:
 
         module = self.__importModule("index", index)
         target = getattr(module, "index")
-        instance = target(self.project, os.getcwd(), args[2:])
+        instance = target(self.project, os.getcwd().replace("\\", "/"), args[2:])
         if self.called["Project Type"] == "Module":
             return "Modules should be imported into the project!"
 
@@ -380,12 +388,13 @@ class main:
         donor = os.path.join(self.frame, "system/sources/init.py")
         open(f"{package}/__init__.py", "w").write(open(donor, "r").read())
 
+        cmd = self.params["CMD"]
         origin = f"{package}/.system"
         index = f"{origin}/index.py"
         content1 = (
             open(index, "r")
             .read()
-            .replace("from imports import *", "from .imports import *")
+            .replace("from imports import *", f"from {cmd}.__system__.imports import *")
         )
         open(index, "w").write(content1)
 
@@ -395,8 +404,22 @@ class main:
             .read()
             .replace("from modules.", "from .modules.")
             .replace("import modules.", "import .modules.")
+            .replace("#from> ", "from ")
+            .replace("#import>", "import")
         )
         open(imports, "w").write(content2)
+
+        modules = f"{origin}/modules"
+        for module in os.listdir(modules):
+            module = f"{modules}/{module}"
+            content3 = (
+                open(module, "r")
+                .read()
+                .replace(
+                    "from imports import *", f"from {cmd}.__system__.imports import *"
+                )
+            )
+            open(module, "w").write(content3)
 
         new = f"{package}/__system__"
         os.rename(origin, new)
@@ -492,6 +515,8 @@ class main:
             if os.path.exists(path):
                 continue
             if item in defaults:
+                continue
+            if item in ["yaml"]:
                 continue
             hint = f'        "{item}"'
             if hint in collect:
@@ -717,7 +742,11 @@ class main:
         method = getattr(object, cmd)
         result = ""
         try:
+            self.exit = (
+                getattr(object, "__exit__") if hasattr(object, "__exit__") else None
+            )
             result = method(*args)
+            sys.stderr = open(os.devnull, "w")
         except TypeError as e:
             if " positional argument" in str(e):
                 cli.error(f"Argument mismatch: passed {len(args)}")
@@ -768,6 +797,8 @@ class main:
 
     def __shutDown(self, signal, frame):
         cli.done("\nCLI is shutting down ...")
+        if self.exit is not None:
+            self.exit()
         sys.exit()
 
     def __licenses(self):
