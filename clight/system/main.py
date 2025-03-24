@@ -410,16 +410,18 @@ class main:
         open(imports, "w").write(content2)
 
         modules = f"{origin}/modules"
-        for module in os.listdir(modules):
-            module = f"{modules}/{module}"
-            content3 = (
-                open(module, "r")
-                .read()
-                .replace(
-                    "from imports import *", f"from {cmd}.__system__.imports import *"
+        if os.path.exists(modules):
+            for module in os.listdir(modules):
+                module = f"{modules}/{module}"
+                content3 = (
+                    open(module, "r")
+                    .read()
+                    .replace(
+                        "from imports import *",
+                        f"from {cmd}.__system__.imports import *",
+                    )
                 )
-            )
-            open(module, "w").write(content3)
+                open(module, "w").write(content3)
 
         new = f"{package}/__system__"
         os.rename(origin, new)
@@ -604,7 +606,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "1.1",
+                "Version": "1.2",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
