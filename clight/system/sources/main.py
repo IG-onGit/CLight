@@ -13,7 +13,10 @@ class main:
 
         index = file.replace("\\", "/")
         command = f'clight execute "{index}" {args}'
-        subprocess.run(command, shell=True)
+        try:
+            subprocess.run(command, shell=True)
+        except KeyboardInterrupt:
+            sys.stderr = open(os.devnull, "w")
         pass
 
 
