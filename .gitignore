@@ -1,0 +1,8 @@
+__pycache__
+desktop.ini
+clight/system/sources/.pypi
+clight/package/*
+!clight/package/.placeholder
+clight.egg-info
+build
+dist
