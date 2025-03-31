@@ -1,7 +1,7 @@
-# CLight v1.2
+# CLight v1.3
 
 **Project**: CLight
-<br>**Version**: 1.2
+<br>**Version**: 1.3
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
@@ -23,6 +23,7 @@ These are the available commands you can use:
 
 - `clight` - To list available commands
 - `clight new` - Create new project
+- `clight add` - Add existing project to catalog
 - `clight module (name)` - Create new module
 - `clight reform (-t)` - Edit project params, (-t) to skip templates
 - `clight all` - List existing projects

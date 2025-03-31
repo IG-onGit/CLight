@@ -69,6 +69,33 @@ class main:
 
         return "Project created"
 
+    def add(self):  # Add existing project to catalog
+        if not os.path.exists(self.project):
+            return "Invalid project folder!"
+
+        index = os.path.join(self.project, ".system/index.py")
+        if not os.path.exists(index):
+            return "Invalid index file!"
+
+        config = f"{self.project}/.system/sources/clight.json"
+        if not os.path.exists(config):
+            return "Invalid config!"
+
+        params = json.loads(cli.read(config))
+        if not params:
+            return "Invalid config params!"
+
+        batfile = f"{self.catalog}/" + params["CMD"] + ".bat"
+        if os.path.exists(self.config) and os.path.exists(batfile):
+            return "Project already exists!"
+
+        params["index"] = index
+        params["CMD"] = params["CMD"].replace("-", "_")
+
+        self.__renderTemplate("{{CMD}}.bat", params, self.catalog)
+
+        return "Project added"
+
     def module(self, name=""):  # (name) - Create new module
         if not os.path.exists(self.config):
             return "Invalid project directory!"
@@ -606,7 +633,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "1.2",
+                "Version": "1.3",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
