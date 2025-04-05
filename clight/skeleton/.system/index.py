@@ -8,6 +8,10 @@ class index:
         # ...
         pass
 
+    def __exit__(self):
+        # ...
+        pass
+
     ####################################################################################// Main
     def demo(self, param=""):  # (param) - Test demo method with param
         if not param:
