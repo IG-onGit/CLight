@@ -1,7 +1,7 @@
 # CLight v1.3
 
 **Project**: CLight
-<br>**Version**: 1.3
+<br>**Version**: 1.3.2
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
@@ -59,6 +59,7 @@ These are basic methods from the `clight` package class called `cli` that you ca
 - `cli.info("message")` - Print an info message in blue
 - `cli.hint("message")` - Print a hint in yellow
 - `cli.done("message")` - Print a completion message in green
+- `cli.trace("message")` - Print hidden developer message, activate dev mode with `cli.dev = True`
 - `cli.input("hint")` - Define CLI input field
 - `cli.selection("hint", ["A", "B"])` - Define selection input field
 - `cli.confirmation("hint")` - Define confirmation input field

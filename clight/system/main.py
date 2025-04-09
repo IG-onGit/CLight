@@ -537,7 +537,7 @@ class main:
 
         collect = []
         for item in modules:
-            item = item.split(".")[0].strip()
+            item = item.split(".")[0].strip().replace(":", ".")
             if "clight" in item:
                 continue
             path = os.path.join(project, ".system", item)

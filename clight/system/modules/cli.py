@@ -5,6 +5,7 @@ class cli:
     mode = "text"
     speed = 150
     voice = 1
+    dev = False
 
     ####################################################################################// Load
     def __init__(self):
@@ -13,31 +14,35 @@ class cli:
     ####################################################################################// Main
     def hint(message="", update=False):
         end = "\n"
-        if update:
+        if update and not cli.dev:
             end = "\r"
             message += " " * 100
         print(fg("yellow") + message + attr("reset"), end=end)
 
     def done(message="", update=False):
         end = "\n"
-        if update:
+        if update and not cli.dev:
             end = "\r"
             message += " " * 100
         print(fg("green") + message + attr("reset"), end=end)
 
     def info(message="", update=False):
         end = "\n"
-        if update:
+        if update and not cli.dev:
             end = "\r"
             message += " " * 100
-        print(fg("blue") + message + attr("reset"), end=end)
+        print(fg("cyan") + message + attr("reset"), end=end)
 
     def error(message="", update=False):
         end = "\n"
-        if update:
+        if update and not cli.dev:
             end = "\r"
             message += " " * 100
         print(fg("red") + message + "!" + attr("reset"), end=end)
+
+    def trace(message=""):
+        if cli.dev:
+            print("● " + message)
 
     def input(hint="", must=False):
         if not hint:
