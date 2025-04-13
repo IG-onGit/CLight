@@ -151,7 +151,7 @@ class cli:
                     return False
 
     def read(file=""):
-        if not os.path.exists(file):
+        if not os.path.exists(file) or not os.path.isfile(file):
             return ""
 
         return open(file, "r", encoding="utf-8", errors="replace").read()
