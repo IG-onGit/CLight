@@ -163,6 +163,15 @@ class cli:
             f.write(content)
         return file
 
+    def append(file="", content="", newline=True):
+        if not content.strip():
+            return False
+
+        content = "\n" + content if newline and os.path.exists(file) else content
+        open(file, "a").write(content)
+
+        return True
+
     def yaml(file=""):
         if not os.path.exists(file):
             return {}

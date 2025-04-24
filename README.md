@@ -1,7 +1,7 @@
 # CLight v1.3
 
 **Project**: CLight
-<br>**Version**: 1.3.3
+<br>**Version**: 1.3.4
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
@@ -69,6 +69,7 @@ These are basic methods from the `clight` package class called `cli` that you ca
 - `cli.listen()` - Listen and convert speech to text
 - `cli.read("Folder/file.txt")` - Read file and get content
 - `cli.write("Folder/file.txt", "content")` - Write file with content
+- `cli.append("Folder/file.txt", "content")` - Append content to the file 
 - `cli.yaml("Folder/file.yaml")` - Read and convert YAML file as dict
 - `cli.template("content", {...})` - Parse template content with given key-value pairs
 - `cli.chars(10)` - Get random characters with given length
