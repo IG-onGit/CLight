@@ -78,6 +78,27 @@ class cli:
 
         return answers
 
+    def selections(hint="", options=[], must=False):
+        if not hint:
+            hint = "Select"
+        if not options:
+            return ""
+
+        cli.sound("ask")
+        questions = [
+            inquirer.Checkbox(
+                "choices",
+                message=hint,
+                choices=options,
+            ),
+        ]
+
+        answers = inquirer.prompt(questions)['choices']
+        if not answers and must:
+            return cli.selections(hint, options, must)
+
+        return answers
+
     def confirmation(hint="", must=False):
         if not hint:
             hint = "Confirm"

@@ -1,7 +1,7 @@
 # CLight v1.3
 
 **Project**: CLight
-<br>**Version**: 1.3.4
+<br>**Version**: 1.3.5
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
@@ -62,6 +62,7 @@ These are basic methods from the `clight` package class called `cli` that you ca
 - `cli.trace("message")` - Print hidden developer message, activate dev mode with `cli.dev = True`
 - `cli.input("hint")` - Define CLI input field
 - `cli.selection("hint", ["A", "B"])` - Define selection input field
+- `cli.selections("hint", ["A", "B"])` - Define multiple selection input field
 - `cli.confirmation("hint")` - Define confirmation input field
 - `cli.value("key", {...}, "default")` - Get value from data
 - `cli.sound("done")` - Set system sound - start, ready, done, error, ask, set or unset
