@@ -149,6 +149,39 @@ class main:
 
         return "Params updated"
 
+    def upgrade(self):  # Upgrade version number
+        if not os.path.exists(self.config):
+            return "Invalid project directory!"
+        
+        config = json.loads(cli.read(self.config))
+        if "Version" not in config:
+            return "Could not detect current version!"
+
+        current = cli.value("Version", config, "0.0.0")
+        parts = current.split('.')
+        if len(parts) != 3:
+            return "Version must have three parts: major.minor.patch!"
+
+        major, minor, patch = map(int, parts)
+        patch += 1
+        if patch >= 10:
+            patch = 0
+            minor += 1
+            if minor >= 10:
+                minor = 0
+                major += 1
+
+        new = f"{major}.{minor}.{patch}"
+        config["Version"] = new
+        cli.write(self.config, json.dumps(config))
+
+        readme = cli.read(self.project + "/README.md").strip()
+        if readme:
+            readme = readme.replace(f"v{current}", f"v{new}").replace(f"**Version**: {current}", f"**Version**: {new}")
+            cli.write(self.project + "/README.md", readme)
+
+        return f"Upgraded to version: {new}"
+
     def all(self):  # List existing projects
         collect = []
         for item in os.listdir(self.catalog):

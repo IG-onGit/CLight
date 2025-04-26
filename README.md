@@ -1,7 +1,7 @@
 # CLight v1.3
 
 **Project**: CLight
-<br>**Version**: 1.3.5
+<br>**Version**: 1.3.6
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
@@ -26,6 +26,7 @@ These are the available commands you can use:
 - `clight add` - Add existing project to catalog
 - `clight module (name)` - Create new module
 - `clight reform (-t)` - Edit project params, (-t) to skip templates
+- `clight upgrade` - Upgrade version number
 - `clight all` - List existing projects
 - `clight publish (-t)` - Publish project on PyPI, (-t) to test locally
 - `clight remove (project)` - Remove project
