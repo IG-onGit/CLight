@@ -152,13 +152,13 @@ class main:
     def upgrade(self):  # Upgrade version number
         if not os.path.exists(self.config):
             return "Invalid project directory!"
-        
+
         config = json.loads(cli.read(self.config))
         if "Version" not in config:
             return "Could not detect current version!"
 
         current = cli.value("Version", config, "0.0.0")
-        parts = current.split('.')
+        parts = current.split(".")
         if len(parts) != 3:
             return "Version must have three parts: major.minor.patch!"
 
@@ -177,7 +177,9 @@ class main:
 
         readme = cli.read(self.project + "/README.md").strip()
         if readme:
-            readme = readme.replace(f"v{current}", f"v{new}").replace(f"**Version**: {current}", f"**Version**: {new}")
+            readme = readme.replace(f"v{current}", f"v{new}").replace(
+                f"**Version**: {current}", f"**Version**: {new}"
+            )
             cli.write(self.project + "/README.md", readme)
 
         return f"Upgraded to version: {new}"
@@ -352,24 +354,12 @@ class main:
 
         return os.getenv("HOME")
 
-    def __encrypt(self, text="", key=""):
-        sha256_hash = hashlib.sha256(key.encode("utf-8")).digest()
-        base64_key = base64.urlsafe_b64encode(sha256_hash)
-        encrypted_text = Fernet(base64_key).encrypt(text.encode())
-        return encrypted_text.decode("utf-8")
-
-    def __decrypt(self, encrypted="", key=""):
-        sha256_hash = hashlib.sha256(key.encode("utf-8")).digest()
-        base64_key = base64.urlsafe_b64encode(sha256_hash)
-        decrypted_text = Fernet(base64_key).decrypt(encrypted.encode())
-        return decrypted_text.decode("utf-8")
-
     def __getCredentials(self):
         pypi = os.path.join(self.frame, "system/sources/.pypi")
         if os.path.exists(pypi):
             encrypted = open(pypi, "r", encoding="utf-8").read()
             password = self.__input("Password Key", [], True)
-            content = self.__decrypt(encrypted, password)
+            content = cli.decrypt(encrypted, password)
             return json.loads(content)
 
         secrets = {
@@ -380,7 +370,7 @@ class main:
         save = self.__input("Do you want to save credentials", ["No", "Yes"], True)
         if save == "Yes":
             password = self.__input("Password Key", [], True)
-            encrypted = self.__encrypt(json.dumps(secrets), password)
+            encrypted = cli.encrypt(json.dumps(secrets), password)
             open(pypi, "w", encoding="utf-8").write(encrypted)
 
         return secrets

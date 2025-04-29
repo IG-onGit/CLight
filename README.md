@@ -1,7 +1,7 @@
 # CLight v1.3
 
 **Project**: CLight
-<br>**Version**: 1.3.6
+<br>**Version**: 1.3.7
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
@@ -80,6 +80,8 @@ These are basic methods from the `clight` package class called `cli` that you ca
 - `cli.isFile(file)` - Check if file exists
 - `cli.isFolder(folder)` - Check if folder exists
 - `cli.execute("cmd", "message")` - Execute CMD command
+- `cli.encrypt("data", "key")` - Encrypt data by key
+- `cli.decrypt("encrypted", "key")` - Decrypt encrypted data by key
 
 ## Specifying Parameters
 
