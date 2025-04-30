@@ -257,19 +257,29 @@ class cli:
         return False
 
     def encrypt(text="", key=""):
-        salt = os.urandom(16)
-        derived_key = cli.__derive_key(key, salt)
-        fernet = Fernet(derived_key)
-        encrypted = fernet.encrypt(text.encode())
-        return base64.urlsafe_b64encode(salt + encrypted).decode("utf-8")
+        try:
+            salt = os.urandom(16)
+            derived_key = cli.__derive_key(key, salt)
+            fernet = Fernet(derived_key)
+            encrypted = fernet.encrypt(text.encode())
+            return base64.urlsafe_b64encode(salt + encrypted).decode("utf-8")
+        except Exception as e:
+            e = f": {e}" if str(e).strip() else ""
+            cli.trace(f"Could not encrypt{e}!")
+        return ""
 
     def decrypt(encrypted="", key=""):
-        encrypted_bytes = base64.urlsafe_b64decode(encrypted.encode())
-        salt = encrypted_bytes[:16]
-        encrypted_text = encrypted_bytes[16:]
-        derived_key = cli.__derive_key(key, salt)
-        fernet = Fernet(derived_key)
-        return fernet.decrypt(encrypted_text).decode("utf-8")
+        try:
+            encrypted_bytes = base64.urlsafe_b64decode(encrypted.encode())
+            salt = encrypted_bytes[:16]
+            encrypted_text = encrypted_bytes[16:]
+            derived_key = cli.__derive_key(key, salt)
+            fernet = Fernet(derived_key)
+            return fernet.decrypt(encrypted_text).decode("utf-8")
+        except Exception as e:
+            e = f": {e}" if str(e).strip() else ""
+            cli.trace(f"Could not decrypt{e}!")
+        return ""
 
     ####################################################################################// Helpers
     def __derive_key(password: str, salt: bytes) -> bytes:
@@ -278,6 +288,6 @@ class cli:
             length=32,
             salt=salt,
             iterations=100_000,
-            backend=default_backend()
+            backend=default_backend(),
         )
         return base64.urlsafe_b64encode(kdf.derive(password.encode()))
