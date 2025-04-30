@@ -687,6 +687,8 @@ class main:
                     continue
                 if "\\__pycache__\\" in file:
                     continue
+                if file[-5:] == ".TODO" or "\\desktop.ini" in file:
+                    continue
                 skipthis = False
                 for item in skip:
                     if item in file:
