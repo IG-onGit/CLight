@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="clight",
-    version="2.0.0",
+    version="2.0.1",
     packages=find_packages(),
     install_requires=[
         "PyYAML",
@@ -39,6 +39,7 @@ setup(
             "system/importer.py",
             "system/main.py",
             "system/modules/cli.py",
+            "system/modules/semver.py",
             "system/sources/.gitlab-ci.yml",
             "system/sources/logo.ico",
             "system/sources/main.py",
