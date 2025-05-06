@@ -149,7 +149,7 @@ class main:
 
         return "Params updated"
 
-    def upgrade(self):  # Upgrade version number
+    def version(self, number=""):  # Upgrade semantic version number of the project
         if not os.path.exists(self.config):
             return "Invalid project directory!"
 
@@ -157,21 +157,15 @@ class main:
         if "Version" not in config:
             return "Could not detect current version!"
 
+        number = number.strip()
+        if number and not SemVer.valid(number):
+            return "Invalid semantic version number!"
+
         current = cli.value("Version", config, "0.0.0")
-        parts = current.split(".")
-        if len(parts) != 3:
-            return "Version must have three parts: major.minor.patch!"
+        if number and number == current:
+            return f'Version "{number}" is the current version!'
 
-        major, minor, patch = map(int, parts)
-        patch += 1
-        if patch >= 10:
-            patch = 0
-            minor += 1
-            if minor >= 10:
-                minor = 0
-                major += 1
-
-        new = f"{major}.{minor}.{patch}"
+        new = number if number else SemVer.bump(current)
         config["Version"] = new
         cli.write(self.config, json.dumps(config))
 
@@ -656,7 +650,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "1.3",
+                "Version": "2.0.0",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",

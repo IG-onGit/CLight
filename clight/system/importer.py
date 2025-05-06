@@ -8,6 +8,7 @@ import re
 import time
 import json
 import yaml
+import types
 import string
 import random
 
@@ -39,3 +40,4 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
 from clight.system.modules.cli import cli
+from clight.system.modules.semver import SemVer
