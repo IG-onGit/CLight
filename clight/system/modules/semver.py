@@ -6,6 +6,9 @@ class SemVer:
     def __init__(self, default_tag: str = 'alpha'):
         self.test = False
         self.default_tag = default_tag
+        self.semver_pattern = r"^(\d+)\.(\d+)\.(\d+)(?:-([0-9A-Za-z]+)\.(\d+))?$"
+        self.precedence = {"alpha": 1, "beta": 2, "rc": 3}
+        pass
 
     ####################################################################################// Main
     def bump(current: str = "0.0.0", action: str = None):
@@ -37,6 +40,44 @@ class SemVer:
             return obj.__bumpTag(action, parts.major, parts.minor, parts.patch, parts.tag, parts.tagN)
 
         return obj.__bumpNumber(action, parts.major, parts.minor, parts.patch)
+
+    def umbrella(old_version: str, old_versions: List[str], new_versions: List[str]):
+        obj = SemVer()
+        if len(old_versions) != len(new_versions):
+            cli.error("Old and new sub-version lists must match in length")
+            sys.exit()
+
+        umb_maj, umb_min, umb_pat, _, _ = obj.__parseVersion(old_version)
+        highest_severity = 0
+        prereleases: List[Tuple[str, int]] = []
+
+        for ov, nv in zip(old_versions, new_versions):
+            old_v = obj.__parseVersion(ov)
+            new_v = obj.__parseVersion(nv)
+            sev = obj.__bumpSeverity(old_v, new_v)
+            highest_severity = max(highest_severity, sev)
+            if new_v[3] and new_v[4] is not None:
+                prereleases.append((new_v[3], new_v[4]))
+
+        if highest_severity == 3:
+            umb_maj += 1
+            umb_min = 0
+            umb_pat = 0
+        elif highest_severity == 2:
+            umb_min += 1
+            umb_pat = 0
+        elif highest_severity == 1:
+            umb_pat += 1
+
+        if prereleases:
+            best_label = max(
+                prereleases, key=lambda x: (obj.precedence.get(x[0], 0), x[1])
+            )[0]
+            nums = [num for lbl, num in prereleases if lbl == best_label]
+            best_num = max(nums) if nums else 1
+            return f"{umb_maj}.{umb_min}.{umb_pat}-{best_label}.{best_num}"
+
+        return f"{umb_maj}.{umb_min}.{umb_pat}"
 
     def valid(version: str):
         semver_regex = re.compile(
@@ -137,7 +178,196 @@ class SemVer:
             ("1.2.3.4", "patch", "Invalid version string: '1.2.3.4'"),
         ])
 
+    def test_umbrella():
+        return SemVer.__test_umbrella([
+            # 1. Pure patch bumps -> patch bump
+            (
+                "2.3.4",
+                ["1.0.0", "2.3.4", "4.0.1"],
+                ["1.0.1", "2.3.5", "4.0.2"],
+                "2.3.5"
+            ),
+            # 2. Mixed patches + one minor -> minor bump
+            (
+                "2.3.4",
+                ["1.0.0", "2.3.4", "4.0.1"],
+                ["1.0.1", "2.4.0", "4.0.2"],
+                "2.4.0"
+            ),
+            # 3. Major bump in any repo -> major bump
+            (
+                "2.3.4",
+                ["1.0.0", "2.3.4", "4.0.1"],
+                ["1.0.0", "3.0.0", "4.0.1"],
+                "3.0.0"
+            ),
+            # 4. No changes -> no bump
+            (
+                "1.2.3",
+                ["1.0.0", "2.1.1", "3.4.5"],
+                ["1.0.0", "2.1.1", "3.4.5"],
+                "1.2.3"
+            ),
+            # 5. Pre-release bump only -> patch bump + label
+            (
+                "0.1.0-alpha.1",
+                ["0.1.0-alpha.1", "1.0.0", "2.0.0"],
+                ["0.1.0-alpha.2", "1.0.0", "2.0.0"],
+                "0.1.1-alpha.2"
+            ),
+            # 6. Pre-release selection across labels
+            (
+                "2.3.4-beta.1",
+                ["1.0.0-alpha.2", "2.3.4", "4.0.1-rc.1"],
+                ["1.0.1", "2.4.0-beta.2", "4.0.1-rc.1"],
+                "2.3.5-rc.1"
+            ),
+            # 7. Pre-release removal -> patch bump
+            (
+                "3.0.0-beta.3",
+                ["1.0.0-beta.3", "2.0.0-alpha.2", "3.0.0-alpha.1"],
+                ["1.0.0", "2.0.0-alpha.2", "3.0.0-alpha.1"],
+                "3.0.1-alpha.2"
+            ),
+            # 8. Mixed removal and bump -> patch bump and select label
+            (
+                "3.0.1-alpha.2",
+                ["1.0.0", "2.0.0-alpha.2", "3.0.0-alpha.1"],
+                ["1.0.0", "2.0.0", "3.0.0-alpha.1"],
+                "3.0.2-alpha.1"
+            ),
+            # 9. All subs stable -> stable patch bump
+            (
+                "3.0.2-alpha.1",
+                ["1.0.0", "2.0.0", "3.0.0-alpha.1"],
+                ["1.0.0", "2.0.0", "3.0.0"],
+                "3.0.3"
+            ),
+            # 10. Pre-release upgrades in all -> bump with highest label
+            (
+                "1.0.0-alpha.1",
+                ["1.0.0-alpha.1", "2.0.0-alpha.1", "3.0.0-alpha.1"],
+                ["1.0.0-beta.1", "2.0.0-beta.1", "3.0.0-beta.1"],
+                "1.0.1-beta.1"
+            ),
+            # 11. Mixed stable and beta to full release
+            (
+                "4.5.6-beta.2",
+                ["1.0.0-beta.2", "2.0.0-beta.2", "3.0.0"],
+                ["1.0.0", "2.0.0", "3.0.0"],
+                "4.5.7"
+            ),
+            # 12. Jump from patch to major in two repos
+            (
+                "1.1.1",
+                ["0.1.0", "1.1.1", "1.0.0"],
+                ["1.0.0", "2.0.0", "2.0.0"],
+                "2.0.0"
+            ),
+            # 13. Beta to rc in multiple -> highest label preserved
+            (
+                "0.9.9-beta.1",
+                ["1.0.0-beta.1", "2.0.0-beta.1"],
+                ["1.0.0-rc.1", "2.0.0-rc.1"],
+                "0.9.10-rc.1"
+            ),
+            # 14. Stable to alpha in one repo -> label attached
+            (
+                "1.0.0",
+                ["1.0.0", "2.0.0"],
+                ["1.0.0", "2.0.0-alpha.1"],
+                "1.0.1-alpha.1"
+            ),
+            # 15. RC to final release in one -> label removed
+            (
+                "1.2.3-rc.2",
+                ["1.0.0-rc.2", "2.0.0"],
+                ["1.0.0", "2.0.0"],
+                "1.2.4"
+            ),
+            # 16. Alpha increased in one -> label and patch bumped
+            (
+                "1.2.4-alpha.1",
+                ["1.0.0-alpha.1", "2.0.0"],
+                ["1.0.0-alpha.2", "2.0.0"],
+                "1.2.5-alpha.2"
+            ),
+            # 17. RC to stable in all -> final release
+            (
+                "2.3.9-rc.3",
+                ["1.0.0-rc.3", "2.0.0-rc.3"],
+                ["1.0.0", "2.0.0"],
+                "2.3.10"
+            ),
+            # 18. Alpha and beta upgraded -> beta takes priority
+            (
+                "0.1.0-alpha.3",
+                ["1.0.0-alpha.3", "2.0.0"],
+                ["1.0.0-beta.1", "2.0.0"],
+                "0.1.1-beta.1"
+            ),
+            # 19. Downgrade from beta to alpha -> still bumps patch with alpha label
+            (
+                "0.1.1-beta.1",
+                ["1.0.0-beta.1", "2.0.0"],
+                ["1.0.0-alpha.1", "2.0.0"],
+                "0.1.2-alpha.1"
+            ),
+            # 20. Mixed patch + label introduction
+            (
+                "1.2.3",
+                ["1.0.0", "2.0.0"],
+                ["1.0.1", "2.0.0-alpha.1"],
+                "1.2.4-alpha.1"
+            ),
+        ])
+
     ####################################################################################// Helpers
+    
+    def __parseVersion(self, version: str) -> Tuple[int, int, int, Optional[str], Optional[int]]:
+        match = re.match(self.semver_pattern, version)
+        if not match:
+            cli.error(f"Invalid version format: '{version}'. Expected 'MAJOR.MINOR.PATCH[-label.number]'.")
+            sys.exit()
+
+        major, minor, patch = map(int, match.groups()[:3])
+        label = match.group(4)
+        label_num = int(match.group(5)) if match.group(5) else None
+
+        return major, minor, patch, label, label_num
+
+    def __bumpSeverity(self, old: Tuple[int, int, int, Optional[str], Optional[int]], new: Tuple[int, int, int, Optional[str], Optional[int]]):
+        old_maj, old_min, old_pat, old_lbl, old_num = old
+        new_maj, new_min, new_pat, new_lbl, new_num = new
+
+        # Pre-release removal (old had label, new is stable) -> patch
+        if old_lbl is not None and new_lbl is None:
+            return 1
+
+        # Any pre-release bump (new label or label number increase) -> patch
+        if new_lbl is not None and (
+            new_lbl != old_lbl
+            or (
+                old_lbl == new_lbl
+                and old_num is not None
+                and new_num is not None
+                and new_num > old_num
+            )
+        ):
+            return 1
+
+        # Stable major bump
+        if new_lbl is None and new_maj > old_maj:
+            return 3
+        # Stable minor bump
+        if new_lbl is None and new_min > old_min:
+            return 2
+        # Stable patch bump
+        if new_lbl is None and new_pat > old_pat:
+            return 1
+
+        return 0
+
     def __getParts(self, current: str):
         pattern = r'^(\d+)\.(\d+)\.(\d+)(?:-([a-zA-Z]+)\.(\d+))?$'
         match = re.match(pattern, current)
@@ -242,5 +472,17 @@ class SemVer:
                 cli.done(f"{action:6s}| {str(version):13s} | {str(result):6s}")
             else:
                 print(f"{action:6s}| {str(version):13s} | {str(result):6s}")
+        cli.info("--------------------------------------------\n")
+        sys.exit()
+
+    def __test_umbrella(cases: list =[]):
+        cli.info(f"Old Version   | New Version")
+        cli.info("--------------------------------------------")
+        for old_uv, old_versions, new_versions, umbrella in cases:
+            result = SemVer.umbrella(old_uv, old_versions, new_versions)
+            if result == umbrella:
+                cli.done(f'{old_uv:13s} | {result}')
+            else:
+                print(f'Returned umbrella version: "{result}" when expecting "{umbrella}"')
         cli.info("--------------------------------------------\n")
         sys.exit()

@@ -36,6 +36,7 @@ import subprocess
 from colored import fg, bg, attr
 import speech_recognition as speech
 from cryptography.fernet import Fernet
+from typing import List, Tuple, Optional
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.backends import default_backend
