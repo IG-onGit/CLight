@@ -102,11 +102,17 @@ class main:
         if not name:
             return "Specify module name!"
 
-        file = os.path.join(self.project, f".system/modules/{name}.py")
+        hint = name[0].lower() + name[1:]
+        file = os.path.join(self.project, f".system/modules/{hint}.py")
         if os.path.exists(file):
             return "Module already exists!"
 
-        self.__renderTemplate("{{module}}.py", {"module": name}, os.path.dirname(file))
+        template = cli.read(os.path.join(self.frame, "system/sources/{{module}}.py"))
+        if not template.strip():
+            return "Invalid template!"
+
+        cli.write(file, cli.template(template, {"module": name}))
+
         return "Module created"
 
     def reform(self, update=""):  # (-t) - Edit project params, (-t) to skip templates
@@ -650,7 +656,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "2.1.0",
+                "Version": "2.1.1",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
