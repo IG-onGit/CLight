@@ -45,7 +45,7 @@ class main:
         config["CMD"] = config["CMD"].replace("-", "_")
 
         os.makedirs(os.path.dirname(self.config), exist_ok=True)
-        open(self.config, "w").write(json.dumps(config))
+        open(self.config, "w").write(json.dumps(config, indent=4))
 
         config["index"] = os.path.join(self.project, ".system/index.py")
 
@@ -135,7 +135,7 @@ class main:
                 self.params[item] = value
 
         print()
-        open(self.config, "w").write(json.dumps(self.params))
+        open(self.config, "w").write(json.dumps(self.params, indent=4))
 
         index = os.path.join(self.project, ".system/index.py")
         if update != "-t":
@@ -173,7 +173,7 @@ class main:
 
         new = number if number else SemVer.bump(current)
         config["Version"] = new
-        cli.write(self.config, json.dumps(config))
+        cli.write(self.config, json.dumps(config, indent=4))
 
         readme = cli.read(self.project + "/README.md").strip()
         if readme:
@@ -656,7 +656,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "2.1.1",
+                "Version": "2.2.0",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",

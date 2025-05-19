@@ -33,6 +33,8 @@ import platform
 import sysconfig
 import importlib
 import subprocess
+import unicodedata
+from textwrap import dedent
 from colored import fg, bg, attr
 import speech_recognition as speech
 from cryptography.fernet import Fernet

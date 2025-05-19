@@ -281,6 +281,61 @@ class cli:
             cli.trace(f"Could not decrypt{e}!")
         return ""
 
+    def filter(text="", length=1_000):
+        folder = os.path.dirname(os.path.dirname(__file__))
+        file = os.path.join(folder, "sources/ansi_escape")
+        if not os.path.exists(file):
+            return ""
+
+        external_pattern = open(file, "r").read()
+        ansi_re = re.compile(dedent(external_pattern), re.VERBOSE | re.DOTALL)
+
+        allowed = set(
+            "abcdefghijklmnopqrstuvwxyz"
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "0123456789"
+            " .,;:!?'-_()[]{}<>/\\\"\n\t"
+        )
+
+        bidi_chars = {
+            "\u202a",  # LRE, RLE, PDF, LRO, RLO
+            "\u202b",
+            "\u202c",
+            "\u202d",
+            "\u202e",
+            "\u2066",  # LRI, RLI, FSI, PDI
+            "\u2067",
+            "\u2068",
+            "\u2069",
+        }
+
+        allow_bidi = [
+            "\u0040",  # @
+            "\u0026",  # &
+        ]
+
+        text = text[:length]  # 0. Enforce max length
+        text = ansi_re.sub("", text)  # 1. Strip ANSI/OSC
+        text = unicodedata.normalize("NFC", text)  # 2. Normalize
+
+        out = []
+        for ch in text:
+            cat = unicodedata.category(ch)
+            if ch in ("\n", "\t"):
+                out.append(ch)
+            elif ch in bidi_chars:
+                continue
+            elif cat.startswith("C") or cat == "Cf":
+                continue
+            elif ch == "\r":
+                continue
+            elif ch not in allowed and ch not in allow_bidi:
+                continue
+            else:
+                out.append(ch)
+
+        return "".join(out)
+
     ####################################################################################// Helpers
     def __derive_key(password: str, salt: bytes) -> bytes:
         kdf = PBKDF2HMAC(

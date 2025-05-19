@@ -1,7 +1,7 @@
-# CLight v2.1.1
+# CLight v2.2.0
 
 **Project**: CLight
-<br>**Version**: 2.1.1
+<br>**Version**: 2.2.0
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
@@ -82,6 +82,7 @@ These are basic methods from the `clight` package class called `cli` that you ca
 - `cli.execute("cmd", "message")` - Execute CMD command
 - `cli.encrypt("data", "key")` - Encrypt data by key
 - `cli.decrypt("encrypted", "key")` - Decrypt encrypted data by key
+- `cli.filter("text")` - Filter user text before printing
 
 ## Specifying Parameters
 
