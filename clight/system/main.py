@@ -553,7 +553,8 @@ class main:
             cli.error("Invalid imports file")
             return ""
 
-        py = open(imports, "r", encoding="utf-8").read()
+        content = open(imports, "r", encoding="utf-8").read()
+        py = "\n".join([line for line in content.splitlines() if "!install" not in line])
         find = re.findall(r"import\s+(\S+)(?:\s+as\s+\S+)?|from\s+(\S+)\s+import", py)
         modules = [module for match in find for module in match if module]
         defaults = self.__defaultModules()
@@ -656,7 +657,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "2.2.1",
+                "Version": "2.2.2",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
