@@ -35,6 +35,48 @@ These are the available commands you can use:
 - `clight update` - Update local installation test
 - `clight uninstall` - Test the uninstallation process locally
 
+## Usage
+
+It's easy to use this framework, just follow these simple steps:
+
+- Navigate to your project's empty folder using CMD.
+- Run `clight new` and fill out the simple CLI form.
+- Once you complete the details, CLight will automatically create a basic setup.
+- Now, you can build CLI commands by simply creating methods in the `/.system/index.py` file.
+- To create a custom module, run `clight module <name>` and find it in the `/.system/modules` folder.
+- To include some required pip modules for your project, specify them "only" in the `/.system/imports.py` file.
+- You can include other file resources in the `/.system/sources` folder.
+
+> By specifying the required pip modules in `/.system/imports.py` file just once - you automatically include them across the index file and your custom modules, so you don't need to make your modules ugly and separated.
+
+In case you need to import a module with a specific version, comment it at the top of the `/.system/imports.py` file like this: `# import <module>==<major:minor:patch>`, then import it as it used to be imported. Here is the example:
+
+```python
+from clight.system.importer import cli  # DON'T REMOVE THIS LINE
+
+# import openai==0:28
+
+import os
+import sys
+import openai
+...
+
+```
+
+In case you have to import a module with a different name than its importer hint, for example, in the case of `soupsieve`, if you import it like this `from bs4 import BeautifulSoup`, "bs4" is not a module and could not be processed for the installation of your project on other machines - You just need to add "soupsieve" as a commented line at the top of the file like this: `# import soupsieve` and then add `# !install` to the end of the actual import line like this: `from bs4 import BeautifulSoup  # !install`. Here is the example:
+
+```python
+from clight.system.importer import cli  # DON'T REMOVE THIS LINE
+
+# import soupsieve
+
+import os
+import sys
+from bs4 import BeautifulSoup  # !install
+...
+
+```
+
 ## Rules
 
 Don't remove these items from the project's `.system` folder:
@@ -138,8 +180,8 @@ When creating a project with **CLight**, you should specify the OS environment f
 
 **Before publishing your updated project, according to PyPI rules, you must increase your project's version number:**
 
-1. Navigate to your project's root directory using CMD and run `clight reform`
-1. Skip everything else, and only edit the **Version** parameter's value
+Navigate to your project's root directory using CMD, run `clight version` and select type option of the changes.
+CLight will automatically increase the version number based on your selected option.
 
 **Based on your selected Repository Type, the project will be deployed to PyPI in the following ways:**
 
