@@ -48,9 +48,11 @@ class cli:
         if not hint:
             hint = "Enter"
 
-        value = input(f"{hint}: ")
+        if cli.mode == "voice":
+            cli.sound("ask")
+        value = input(fg("light_yellow") + hint + attr("reset") + ": ")
         while must and not value:
-            value = input(f"{hint}: ")
+            value = input(fg("light_yellow") + hint + attr("reset") + ": ")
 
         return value
 
@@ -63,11 +65,13 @@ class cli:
         if not must:
             options = ["Skip"] + options
 
+        if cli.mode == "voice":
+            cli.speak(hint)
         cli.sound("ask")
         questions = [
             inquirer.List(
                 "option",
-                message=hint,
+                message=fg("light_yellow") + hint + attr("reset"),
                 choices=options,
             ),
         ]
@@ -84,11 +88,13 @@ class cli:
         if not options:
             return ""
 
+        if cli.mode == "voice":
+            cli.speak(hint)
         cli.sound("ask")
         questions = [
             inquirer.Checkbox(
                 "choices",
-                message=hint,
+                message=fg("light_yellow") + hint + attr("reset"),
                 choices=options,
             ),
         ]
@@ -108,6 +114,7 @@ class cli:
         cli.sound("ask")
 
         options = "y" if must else "y/n"
+        hint = fg("light_yellow") + hint + attr("reset")
         value = input(f"{hint} ({options}): ")
         while must and (not value or value not in ["Y", "y"]):
             value = input(f"{hint} ({options}): ")
@@ -255,6 +262,26 @@ class cli:
             return False
 
         return False
+
+    def command(line="", wait=True, hide=False, location=".", get=False):
+        if not line:
+            return ""
+
+        if location == ".":
+            location = os.getcwd()
+
+        if get:
+            return subprocess.run(line, cwd=location, text=True, capture_output=True, shell=True).stdout
+        elif wait and hide:
+            subprocess.run(line, cwd=location, text=True, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        elif wait and not hide:
+            subprocess.run(line, cwd=location, text=True, shell=True)
+        elif not wait and hide:
+            subprocess.Popen(line, cwd=location, text=True, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        elif not wait and not hide:
+            subprocess.Popen(line, cwd=location, text=True, shell=True)
+
+        return ""
 
     def encrypt(text="", key=""):
         try:

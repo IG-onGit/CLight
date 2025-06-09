@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="clight",
-    version="2.2.2",
+    version="2.3.2",
     packages=find_packages(),
     install_requires=[
         "PyYAML",
@@ -51,6 +51,7 @@ setup(
             "system/sources/{{module}}.py",
             "system/sources/.github/labels.yml",
             "system/sources/.github/workflows/publish.yml",
+            "system/sources/ansi_escape",
             "system/sources/ask.wav",
             "system/sources/done.wav",
             "system/sources/error.wav",

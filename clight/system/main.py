@@ -657,7 +657,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "2.2.2",
+                "Version": "2.3.2",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
@@ -851,7 +851,7 @@ class main:
         return {}
 
     def __shutDown(self, signal, frame):
-        cli.done("\nCLI is shutting down ...")
+        cli.done("\n\nCLI is shutting down ...")
         if self.exit is not None:
             self.exit()
         sys.exit()
