@@ -121,7 +121,7 @@ These are basic methods from the `clight` package class called `cli` that you ca
 - `cli.isPath(path)` - Check if path exists
 - `cli.isFile(file)` - Check if file exists
 - `cli.isFolder(folder)` - Check if folder exists
-- `cli.execute("cmd", "message")` - Execute CMD command
+- `cli.command("cmd line")` - Execute CMD command
 - `cli.encrypt("data", "key")` - Encrypt data by key
 - `cli.decrypt("encrypted", "key")` - Decrypt encrypted data by key
 - `cli.filter("text")` - Filter user text before printing
