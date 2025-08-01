@@ -44,6 +44,13 @@ class cli:
         if cli.dev:
             print("● " + message)
 
+    def line(color="", char="─"):
+        line = char * shutil.get_terminal_size().columns
+        if color:
+            print(fg(color) + line + attr("reset"))
+        else:
+            print(line)
+
     def input(hint="", must=False):
         if not hint:
             hint = "Enter"
@@ -120,6 +127,12 @@ class cli:
             value = input(f"{hint} ({options}): ")
 
         return True if value in ["Y", "y"] else False
+
+    def clear():
+        if platform.system() == "Windows":
+            os.system("cls")
+        else:
+            os.system("clear")
 
     def value(key="", data=None, default=""):
         if key is not None and isinstance(key, int) and 0 <= key < len(data):

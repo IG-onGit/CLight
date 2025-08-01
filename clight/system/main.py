@@ -657,7 +657,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "2.3.3",
+                "Version": "2.4.3",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
@@ -744,15 +744,19 @@ class main:
 
     def __annotations(self, close=False):
         if close:
-            print("\n===============================================\n")
+            print()
+            cli.line("", "/")
+            print()
             return True
+        print()
+        cli.line("", "/")
         print(
-            "\n===============================================\n",
             f"\nProject: {self.params['Name']} v{self.params['Version']} ",
             f"\nAuthor: {self.params['Author']}",
-            f"\nMail: {self.params['Mail']}",
-            "\n\n-----------------------------------------------\n",
+            f"\nMail: {self.params['Mail']}\n",
         )
+        cli.line("", "-")
+        print()
         return True
 
     def __loadEnvironment(self):
