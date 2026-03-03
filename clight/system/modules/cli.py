@@ -416,9 +416,9 @@ class cli:
         bar_len = 30
         filled_len = int(bar_len * percent / 100)
         bar = "█" * filled_len + "-" * (bar_len - filled_len)
-        sys.stdout.write(f"\r{bar} {percent:3d}%{cli.load["hint"]}")
+        sys.stdout.write(f"\r{bar} {percent:3d}%{cli.load['hint']}")
         sys.stdout.flush()
 
         if final and percent < 100:
-            sys.stdout.write(f"\r██████████████████████████████ 100%{cli.load["hint"]}")
+            sys.stdout.write(f"\r██████████████████████████████ 100%{cli.load['hint']}")
             sys.stdout.flush()
