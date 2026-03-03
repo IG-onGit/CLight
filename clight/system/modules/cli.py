@@ -6,6 +6,7 @@ class cli:
     speed = 150
     voice = 1
     dev = False
+    load = {"done": 0, "total": 1, "hint": ""}
 
     ####################################################################################// Load
     def __init__(self):
@@ -376,6 +377,29 @@ class cli:
 
         return "".join(out)
 
+    def setLoad(total=1, hint=""):
+        cli.load["done"] = 0
+        cli.load["total"] = total
+        if hint:
+            cli.load["hint"] = f" - {hint} ..."
+        cli.__progressLoad()
+
+    def addLoad(done):
+        cli.load["done"] += done
+        cli.__progressLoad()
+
+    def cutLoad():
+        sys.stdout.write("\r" + " " * 100 + "\r")
+        sys.stdout.flush()
+
+    def endLoad(message=""):
+        cli.load["done"] = cli.load["total"]
+        cli.__progressLoad(final=True)
+        sys.stdout.write("\r" + " " * 100 + "\r")
+        sys.stdout.flush()
+        if message:
+            cli.info(message)
+
     ####################################################################################// Helpers
     def __derive_key(password: str, salt: bytes) -> bytes:
         kdf = PBKDF2HMAC(
@@ -386,3 +410,15 @@ class cli:
             backend=default_backend(),
         )
         return base64.urlsafe_b64encode(kdf.derive(password.encode()))
+
+    def __progressLoad(final=False):
+        percent = min(int((cli.load["done"] / cli.load["total"]) * 100), 100)
+        bar_len = 30
+        filled_len = int(bar_len * percent / 100)
+        bar = "█" * filled_len + "-" * (bar_len - filled_len)
+        sys.stdout.write(f"\r{bar} {percent:3d}%{cli.load["hint"]}")
+        sys.stdout.flush()
+
+        if final and percent < 100:
+            sys.stdout.write(f"\r██████████████████████████████ 100%{cli.load["hint"]}")
+            sys.stdout.flush()
