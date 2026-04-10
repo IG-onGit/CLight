@@ -81,8 +81,11 @@ class cli:
         if cli.mode == "voice":
             cli.sound("ask")
         value = input(fg("light_yellow") + hint + attr("reset") + ": ")
+        cli.unline()
+
         while must and not value:
             value = input(fg("light_yellow") + hint + attr("reset") + ": ")
+            cli.unline()
 
         return value
 
@@ -107,6 +110,8 @@ class cli:
         ]
 
         answers = inquirer.prompt(questions)["option"]
+        cli.unline(len(options) + 2)
+
         if answers == "Skip":
             return ""
 
@@ -130,6 +135,8 @@ class cli:
         ]
 
         answers = inquirer.prompt(questions)["choices"]
+        cli.unline(len(options) + 2)
+
         if not answers and must:
             return cli.selections(hint, options, must)
 
@@ -146,8 +153,11 @@ class cli:
         options = "y" if must else "y/n"
         hint = fg("light_yellow") + hint + attr("reset")
         value = input(f"{hint} ({options}): ")
+        cli.unline()
+
         while must and (not value or value not in ["Y", "y"]):
             value = input(f"{hint} ({options}): ")
+            cli.unline()
 
         return True if value in ["Y", "y"] else False
 
