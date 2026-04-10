@@ -52,6 +52,28 @@ class cli:
         else:
             print(line)
 
+    def unline(amount=1):
+        if amount <= 0:
+            return False
+
+        try:
+            if os.name == "nt":
+                kernel32 = ctypes.windll.kernel32
+                handle = kernel32.GetStdHandle(-11)
+                mode = ctypes.c_uint32()
+                if kernel32.GetConsoleMode(handle, ctypes.byref(mode)):
+                    kernel32.SetConsoleMode(handle, mode.value | 0x0004)
+        except Exception:
+            pass
+
+        for _ in range(amount):
+            sys.stdout.write("\x1b[1A")
+            sys.stdout.write("\x1b[2K")
+
+        sys.stdout.flush()
+
+        return True
+
     def input(hint="", must=False):
         if not hint:
             hint = "Enter"
@@ -384,8 +406,10 @@ class cli:
             cli.load["hint"] = f" - {hint} ..."
         cli.__progressLoad()
 
-    def addLoad(done):
+    def addLoad(done=1, hint=""):
         cli.load["done"] += done
+        if (hint):
+            cli.load["hint"] = f" - {hint}                            "
         cli.__progressLoad()
 
     def cutLoad():
@@ -416,9 +440,9 @@ class cli:
         bar_len = 30
         filled_len = int(bar_len * percent / 100)
         bar = "█" * filled_len + "-" * (bar_len - filled_len)
-        sys.stdout.write(f"\r{bar} {percent:3d}%{cli.load['hint']}")
+        sys.stdout.write(f"\r{bar} {percent:3d}%{cli.load["hint"]}")
         sys.stdout.flush()
 
         if final and percent < 100:
-            sys.stdout.write(f"\r██████████████████████████████ 100%{cli.load['hint']}")
+            sys.stdout.write(f"\r██████████████████████████████ 100%{cli.load["hint"]}")
             sys.stdout.flush()
