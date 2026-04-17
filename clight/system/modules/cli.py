@@ -7,6 +7,10 @@ class cli:
     voice = 1
     dev = False
     load = {"done": 0, "total": 1, "hint": ""}
+    _loading = False
+    _paused = threading.Event()
+    _paused.set()
+    _thread = None
 
     ####################################################################################// Load
     def __init__(self):
@@ -14,36 +18,51 @@ class cli:
 
     ####################################################################################// Main
     def hint(message="", update=False):
+        cli.pauseLoading()
         end = "\n"
         if update and not cli.dev:
             end = "\r"
             message += " " * 100
         print(fg("yellow") + message + attr("reset"), end=end)
+        cli.continueLoading()
+        pass
 
     def done(message="", update=False):
+        cli.pauseLoading()
         end = "\n"
         if update and not cli.dev:
             end = "\r"
             message += " " * 100
         print(fg("green") + message + attr("reset"), end=end)
+        cli.continueLoading()
+        pass
 
     def info(message="", update=False):
+        cli.pauseLoading()
         end = "\n"
         if update and not cli.dev:
             end = "\r"
             message += " " * 100
         print(fg("cyan") + message + attr("reset"), end=end)
+        cli.continueLoading()
+        pass
 
     def error(message="", update=False):
+        cli.pauseLoading()
         end = "\n"
         if update and not cli.dev:
             end = "\r"
             message += " " * 100
         print(fg("red") + message + "!" + attr("reset"), end=end)
+        cli.continueLoading()
+        pass
 
     def trace(message=""):
         if cli.dev:
+            cli.pauseLoading()
             print("● " + message)
+            cli.continueLoading()
+        pass
 
     def line(color="", char="─"):
         line = char * shutil.get_terminal_size().columns
@@ -409,30 +428,68 @@ class cli:
 
         return "".join(out)
 
-    def setLoad(total=1, hint=""):
+    def setProgress(total=1, hint=""):
         cli.load["done"] = 0
         cli.load["total"] = total
         if hint:
             cli.load["hint"] = f" - {hint} ..."
-        cli.__progressLoad()
+        cli.__progress()
 
-    def addLoad(done=1, hint=""):
+    def addProgress(done=1, hint=""):
         cli.load["done"] += done
         if (hint):
             cli.load["hint"] = f" - {hint}                            "
-        cli.__progressLoad()
+        cli.__progress()
 
-    def cutLoad():
+    def cutProgress():
         sys.stdout.write("\r" + " " * 100 + "\r")
         sys.stdout.flush()
 
-    def endLoad(message=""):
+    def endProgress(message=""):
         cli.load["done"] = cli.load["total"]
-        cli.__progressLoad(final=True)
+        cli.__progress(final=True)
         sys.stdout.write("\r" + " " * 100 + "\r")
         sys.stdout.flush()
         if message:
             cli.info(message)
+
+    def setLoading(message="Loading"):
+        cli.endLoading()
+        if cli._loading:
+            return
+
+        frames = ['   ', '.  ', '.. ', '...']
+        cli._loading = True
+        cli._paused.set()
+        cli._thread = threading.Thread(
+            target=cli.__loading,
+            args=(message, frames),
+            daemon=True
+        )
+        cli._thread.start()
+        pass
+
+    def pauseLoading():
+        if cli._loading:
+            cli._paused.clear()
+            sys.stdout.write('\r' + ' ' * 20 + '\r')
+            sys.stdout.flush()
+        pass
+
+    def continueLoading():
+        if cli._loading:
+            cli._paused.set()
+        pass
+
+    def endLoading():
+        if not cli._loading:
+            return
+        cli._loading = False
+        cli._paused.set()
+        if cli._thread:
+            cli._thread.join()
+            cli._thread = None
+        pass
 
     ####################################################################################// Helpers
     def __derive_key(password: str, salt: bytes) -> bytes:
@@ -445,7 +502,7 @@ class cli:
         )
         return base64.urlsafe_b64encode(kdf.derive(password.encode()))
 
-    def __progressLoad(final=False):
+    def __progress(final=False):
         percent = min(int((cli.load["done"] / cli.load["total"]) * 100), 100)
         bar_len = 30
         filled_len = int(bar_len * percent / 100)
@@ -456,3 +513,18 @@ class cli:
         if final and percent < 100:
             sys.stdout.write(f"\r██████████████████████████████ 100%{cli.load['hint']}")
             sys.stdout.flush()
+
+    def __loading(message, frames):
+        frame_idx = 0
+        try:
+            while cli._loading:
+                cli._paused.wait()
+                frame = frames[frame_idx % len(frames)]
+                sys.stdout.write(f'\r{message} {frame}')
+                sys.stdout.flush()
+                frame_idx += 1
+                time.sleep(0.2)
+        finally:
+            sys.stdout.write('\r' + ' ' * (len(message) + 4) + '\r')
+            sys.stdout.flush()
+        pass
