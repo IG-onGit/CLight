@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="clight",
-    version="2.4.9",
+    version="2.4.10",
     packages=find_packages(),
     install_requires=[
         "PyYAML",
