@@ -94,11 +94,13 @@ class cli:
         return True
 
     def input(hint="", must=False):
+        cli.pauseLoading()
         if not hint:
             hint = "Enter"
 
         if cli.mode == "voice":
             cli.sound("ask")
+
         value = input(fg("light_yellow") + hint + attr("reset") + ": ")
         cli.unline()
 
@@ -106,12 +108,16 @@ class cli:
             value = input(fg("light_yellow") + hint + attr("reset") + ": ")
             cli.unline()
 
+        cli.continueLoading()
         return value
 
     def selection(hint="", options=[], must=False):
+        cli.pauseLoading()
         if not hint:
             hint = "Select"
+
         if not options:
+            cli.continueLoading()
             return ""
 
         if not must:
@@ -132,14 +138,19 @@ class cli:
         cli.unline(len(options) + 2)
 
         if answers == "Skip":
+            cli.continueLoading()
             return ""
 
+        cli.continueLoading()
         return answers
 
     def selections(hint="", options=[], must=False):
+        cli.pauseLoading()
         if not hint:
             hint = "Select"
+
         if not options:
+            cli.continueLoading()
             return ""
 
         if cli.mode == "voice":
@@ -157,11 +168,14 @@ class cli:
         cli.unline(len(options) + 2)
 
         if not answers and must:
+            cli.continueLoading()
             return cli.selections(hint, options, must)
 
+        cli.continueLoading()
         return answers
 
     def confirmation(hint="", must=False):
+        cli.pauseLoading()
         if not hint:
             hint = "Confirm"
 
@@ -178,6 +192,7 @@ class cli:
             value = input(f"{hint} ({options}): ")
             cli.unline()
 
+        cli.continueLoading()
         return True if value in ["Y", "y"] else False
 
     def clear():
