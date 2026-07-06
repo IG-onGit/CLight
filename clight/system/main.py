@@ -657,7 +657,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "2.4.10",
+                "Version": "2.4.11",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
@@ -749,6 +749,7 @@ class main:
             print()
             return True
         print()
+        cli.unline(5)
         cli.line("", "/")
         print(
             f"\nProject: {self.params['Name']} v{self.params['Version']} ",
