@@ -657,7 +657,7 @@ class main:
         if len(self.args) == 0 or self.args[0] != "execute":
             self.params = {
                 "Name": "CLight",
-                "Version": "2.4.11",
+                "Version": "2.4.12",
                 "CMD": "clight",
                 "Author": "Irakli Gzirishvili",
                 "Mail": "gziraklirex@gmail.com",
@@ -806,12 +806,14 @@ class main:
                 getattr(object, "__exit__") if hasattr(object, "__exit__") else None
             )
             result = method(*args)
-            sys.stderr = open(os.devnull, "w")
         except TypeError as e:
             if " positional argument" in str(e):
                 cli.error(f"Argument mismatch: passed {len(args)}")
             else:
-                print(e)
+                cli.error(f"Type error: {e}")
+        except Exception as e:
+            cli.error(f"Command error: {e}")
+        sys.stderr = open(os.devnull, "w")
 
         if "Project Type" in self.called and self.called["Project Type"] == "Module":
             cli.error("Modules should be imported into the project")

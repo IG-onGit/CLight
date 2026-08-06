@@ -1,7 +1,7 @@
-# CLight v2.4.10
+# CLight v2.4.12
 
 **Project**: CLight
-<br>**Version**: 2.4.11
+<br>**Version**: 2.4.12
 <br>**OS**: Microsoft / Windows
 <br>**Author**: Irakli Gzirishvili
 <br>**Mail**: gziraklirex@gmail.com
