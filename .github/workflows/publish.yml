@@ -1,9 +1,10 @@
-name: Publish Package
+name: Publish to PyPI
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   Deploy:
@@ -11,7 +12,6 @@ jobs:
       github.ref == 'refs/heads/main' &&
       !contains(github.event.head_commit.message, '[!deploy]')
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
