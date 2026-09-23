@@ -1,6 +1,6 @@
 # CLight — Technical Overview
 
-**Version**: 2.4.13
+**Version**: 2.4.14
 **Language**: Python 3
 **Entry point**: `clight` console script → `clight.system.main:main`
 
