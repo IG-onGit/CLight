@@ -32,6 +32,7 @@ setup(
             "licenses/Mozilla Public License 2.0 (MPL 2.0)",
             "package/.placeholder",
             "skeleton/.gitignore",
+            "skeleton/guide.md",
             "skeleton/.system/imports.py",
             "skeleton/.system/index.py",
             "skeleton/.system/modules/jobs.py",

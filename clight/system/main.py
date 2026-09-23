@@ -57,6 +57,7 @@ class main:
         folder = os.path.join(self.frame, "skeleton")
 
         self.__cloneSkeleton(folder, self.project)
+        cli.append(os.path.join(self.project, ".gitignore"), "guide.md")
         self.__renderTemplate("README.md", config, self.project)
 
         if "License" in config and config["License"]:
