@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CLight Docs: Commands, cli API and PyPI Publishing | CLight</title>
+<meta name="description" content="Documentation for CLight: install it, set project parameters, use the CLI commands and the shared cli API, and publish to PyPI with Local, GitHub or GitLab.">
+<meta name="keywords" content="clight documentation, python cli framework docs, clight commands, cli api, publish to pypi, pip install clight, semantic versioning, github pypi deploy, windows cli, imports.py">
+<meta name="author" content="Irakli Gzirishvili">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#070b14">
+<link rel="canonical" href="https://ig-ongit.github.io/CLight/docs/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CLight">
+<meta property="og:title" content="CLight Docs: Commands, cli API and PyPI Publishing | CLight">
+<meta property="og:description" content="Documentation for CLight: install it, set project parameters, use the CLI commands and the shared cli API, and publish to PyPI with Local, GitHub or GitLab.">
+<meta property="og:url" content="https://ig-ongit.github.io/CLight/docs/">
+<meta property="og:image" content="https://ig-ongit.github.io/CLight/assets/github.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="CLight logo with the slogan Build Python CLIs. Ship them to PyPI.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CLight Docs: Commands, cli API and PyPI Publishing | CLight">
+<meta name="twitter:description" content="Documentation for CLight: install it, set project parameters, use the CLI commands and the shared cli API, and publish to PyPI with Local, GitHub or GitLab.">
+<meta name="twitter:image" content="https://ig-ongit.github.io/CLight/assets/github.png">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "CLight Documentation", "description": "Install CLight, configure projects, use CLI commands and the cli API, and publish Python CLI apps to PyPI.", "url": "https://ig-ongit.github.io/CLight/docs/", "image": "https://ig-ongit.github.io/CLight/assets/github.png", "inLanguage": "en", "author": {"@type": "Person", "name": "Irakli Gzirishvili", "jobTitle": "Full-Stack Software Engineer", "sameAs": ["https://github.com/IG-onGit", "https://www.linkedin.com/in/ig-link", "https://x.com/IG_onX", "https://www.linkedin.com/newsletters/creatron-7275978973124132864"]}}</script>
+</head>
+<body class="docs-page">
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-terminal" viewBox="0 0 24 24"><path d="M4 17l6-6-6-6"/><path d="M12 19h8"/></symbol><symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9z"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3.3 7L12 12l8.7-5"/><path d="M12 22V12"/></symbol><symbol id="i-tool" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 005 5L21 13l-8 8-3-3 8-8z"/><path d="M3 21l4-4"/></symbol><symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.6 13.4l-7.2 7.2a2 2 0 01-2.8 0L2 12V2h10l8.6 8.6a2 2 0 010 2.8z"/><circle cx="7" cy="7" r="1.5"/></symbol><symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 00-1-2.6c3.1-.3 6.400-1.500 6.400-7a5.400 5.400 0 00-1.500-3.800 5 5 0 00-.1-3.800s-1.200-.3-3.900 1.500a13.400 13.400 0 00-7 0C6.200 2.400 5 2.700 5 2.700a5 5 0 00-.1 3.800A5.400 5.400 0 003.400 10.300c0 5.500 3.300 6.700 6.400 7a3.400 3.400 0 00-1 2.600V22"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol><symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.500A2.500 2.500 0 016.500 17H20V2H6.500A2.500 2.500 0 004 4.500z"/><path d="M4 19.500A2.500 2.500 0 006.500 22H20v-5"/></symbol><symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol><symbol id="i-menu" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol><symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol><symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6"/></symbol><symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M5 21h14M3 8h18"/><path d="M6 8l-3 7a3 3 0 006 0zM18 8l-3 7a3 3 0 006 0z"/></symbol><symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol><symbol id="i-cpu" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></symbol><symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16.200 7.800l-2.100 6.300-6.300 2.100 2.100-6.300z"/></symbol><symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></symbol><symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 01-14 0v-2M12 19v3"/></symbol><symbol id="i-twitter-x" viewBox="0 0 24 24"><path d="M4 4l16 16M20 4L4 20"/></symbol><symbol id="i-linkedin" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-4 0v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></symbol><symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.300 3.900L1.800 18a2 2 0 001.700 3h17a2 2 0 001.700-3L13.700 3.900a2 2 0 00-3.400 0z"/><path d="M12 9v4M12 17h.01"/></symbol></defs></svg>
+<header class="site-header"><div class="container">
+<a class="brand" href="../"><img src="../assets/logo.svg" width="34" height="34" alt=""><span>C<span>Light</span></span></a>
+<nav class="nav" id="site-nav" aria-label="Main"><a href="../#features">Features</a><a href="../#how">How it works</a><a href="../#usage">Usage</a><a href="../#faq">FAQ</a><a href="../docs/">Docs</a><a class="btn btn-ghost btn-sm" href="https://github.com/IG-onGit/CLight" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></nav>
+<button class="burger" type="button" aria-controls="docs-nav" aria-expanded="false" aria-label="Open menu"><svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+</div></header>
+<div class="container docs-layout">
+<aside class="sidebar" id="docs-nav" aria-label="Documentation sections"><h4>Getting started</h4><a href="#general" data-section="general">General</a><a href="#how-it-works" data-section="how-it-works">How it works</a><a href="#installation" data-section="installation">Installation</a><a href="#configuration" data-section="configuration">Configuration</a><h4>Reference</h4><a href="#commands" data-section="commands">CLI commands</a><a href="#project-structure" data-section="project-structure">Project structure</a><a href="#cli-api" data-section="cli-api">The cli API</a><a href="#publishing" data-section="publishing">Publishing</a><h4>Project</h4><a href="#requirements" data-section="requirements">System requirements</a><a href="#license" data-section="license">License</a><a href="#author" data-section="author">About the author</a><h4 class="mobile-only">Site</h4><a class="mobile-only" href="../">Back to home</a><a class="mobile-only" href="https://github.com/IG-onGit/CLight" rel="noopener">GitHub</a></aside>
+<main id="main">
+<article class="doc-section active" id="general"><h1>General</h1><p class="lead">CLight is a Python command-line application and a lightweight framework that simplifies CLI app development and the package distribution process.</p>
+<p>It scaffolds a project for you, registers it as a global command, gives it a shared <code>cli</code> helper library, and publishes it to PyPI from Local, GitHub or GitLab environments.</p>
+<h2>Why CLight</h2><ul>
+<li><strong>Simple structure.</strong> Commands live in one index file; custom modules live in their own folder.</li>
+<li><strong>One import file.</strong> Declare pip modules once and share them across the index and every module.</li>
+<li><strong>Automatic packaging.</strong> Dependencies are detected and <code>setup.py</code> is generated at publish time.</li>
+<li><strong>Three deployment strategies.</strong> Local, GitHub and GitLab.</li>
+<li><strong>Semantic versioning.</strong> Bump versions with <code>clight version</code>.</li></ul>
+<div class="callout"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><p>New here? Continue with <strong>How it works</strong>, then <strong>Installation</strong>.</p></div><div class="pager"><a class="btn btn-primary" href="#how-it-works" data-goto="how-it-works">How it works<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="how-it-works"><h1>How it works</h1><p>Every project you create follows the same flow:</p>
+<ol><li>Run <code>clight new</code> in an empty folder and fill out the form. CLight copies its skeleton into the folder and writes your answers to <code>.system/sources/clight.json</code>.</li>
+<li>CLight registers a <code>&lt;CMD&gt;.bat</code> alias in <code>%USERPROFILE%\.clight</code>, a folder that is added to your PATH.</li>
+<li>When you type your command, the alias calls <code>clight execute</code>, which loads your <code>.system/index.py</code> and runs the method that matches the sub-command.</li>
+<li>A method's return value is printed: a string ending in <code>!</code> shows as an error, any other string as a success message.</li></ol>
+<pre><code data-lang="text" data-title="data flow">&lt;cmd&gt; demo hello
+   |
+   v
+%USERPROFILE%\.clight\&lt;cmd&gt;.bat
+   |
+   v
+clight execute ".system/index.py" demo hello
+   |
+   v
+index.demo("hello")  -&gt;  printed as success or error</code></pre>
+<div class="callout"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><p>Because the alias goes through CLight, your project does not run with <code>python something.py</code>. Run your CMD alias instead.</p></div><div class="pager"><a class="btn btn-ghost" href="#general" data-goto="general"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>General</a><a class="btn btn-primary" href="#installation" data-goto="installation">Installation<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="installation"><h1>Installation</h1><p>Install CLight from PyPI:</p>
+<ol><li>Open CMD as administrator and run the command below, then restart CMD.</li><li>Run <code>clight</code> to check the installation. It lists the available commands.</li></ol>
+<pre><code data-lang="bash" data-title="CMD (administrator)">pip install clight</code></pre>
+<pre><code data-lang="bash" data-title="CMD">clight</code></pre>
+<div class="callout"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><p>On first run CLight adds its catalog folder to your user PATH and asks you to restart CMD. This is expected.</p></div>
+<h2>Create your first project</h2>
+<ol><li>Navigate to an empty folder using CMD.</li><li>Run <code>clight new</code> and fill out the form.</li><li>Add commands as methods in <code>.system/index.py</code>.</li><li>Run your CMD alias, for example <code>mytool demo hello</code>.</li></ol><div class="pager"><a class="btn btn-ghost" href="#how-it-works" data-goto="how-it-works"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>How it works</a><a class="btn btn-primary" href="#configuration" data-goto="configuration">Configuration<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="configuration"><h1>Configuration</h1><p>When you create a project, a form asks for these parameters once. They are saved to <code>.system/sources/clight.json</code>. Run <code>clight reform</code> to edit them later (<code>CMD</code> and <code>Project Type</code> cannot be changed).</p>
+<div class="table-wrap"><table><thead><tr><th>Parameter</th><th>Meaning</th><th>Required</th></tr></thead><tbody><tr><td>Name</td><td>Name of your project</td><td>Yes</td></tr><tr><td>Version</td><td>Version of your project</td><td>Yes</td></tr><tr><td>Description</td><td>Description of your project</td><td>Yes</td></tr><tr><td>Link</td><td>Link to your project</td><td>No</td></tr><tr><td>CMD</td><td>CMD name alias for your project</td><td>Yes</td></tr><tr><td>Author</td><td>Author of the project</td><td>Yes</td></tr><tr><td>Mail</td><td>Mail of the project author</td><td>Yes</td></tr><tr><td>Project Type</td><td><code>App</code> for a CLI application, <code>Module</code> for a single pip module</td><td>Yes</td></tr><tr><td>Repository Type</td><td><code>Local</code>, <code>GitHub</code> or <code>GitLab</code></td><td>Yes</td></tr><tr><td>License</td><td>One of 8 OSI-approved licenses</td><td>No</td></tr><tr><td>Operating System</td><td>Required OS for your project</td><td>Yes</td></tr></tbody></table></div>
+<h2>Repository types</h2>
+<div class="table-wrap"><table><thead><tr><th>Type</th><th>What it does</th></tr></thead><tbody><tr><td>Local</td><td>Publish from your Windows machine to PyPI with <code>clight publish</code>.</td></tr><tr><td>GitHub</td><td>Automatic deployment to PyPI when you push changes to the main branch.</td></tr><tr><td>GitLab</td><td>Automatic deployment to PyPI when you push changes to the main branch.</td></tr></tbody></table></div>
+<h2>Licenses</h2><p>You can include one of 8 OSI-approved licenses: MIT, BSD, ISC (ISCL), Apache Software License, Mozilla Public License 2.0, GNU AGPL v3, GNU GPL v3 and GNU LGPL v3.</p>
+<h2>Operating systems</h2><p>OS Independent, Microsoft / Windows, POSIX / Linux or MacOS.</p><div class="pager"><a class="btn btn-ghost" href="#installation" data-goto="installation"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>Installation</a><a class="btn btn-primary" href="#commands" data-goto="commands">CLI commands<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="commands"><h1>CLI commands</h1><p>These are the commands you can use. Run <code>clight</code> with no arguments to list them.</p>
+<div class="table-wrap"><table><thead><tr><th>Command</th><th>Description</th></tr></thead><tbody><tr><td><code>clight</code></td><td>List available commands</td></tr><tr><td><code>clight new</code></td><td>Create new project</td></tr><tr><td><code>clight add</code></td><td>Add existing project to catalog</td></tr><tr><td><code>clight module (name)</code></td><td>Create new module</td></tr><tr><td><code>clight reform (-t)</code></td><td>Edit project params, <code>-t</code> to skip templates</td></tr><tr><td><code>clight version</code></td><td>Upgrade semantic version number of the project</td></tr><tr><td><code>clight all</code></td><td>List existing projects</td></tr><tr><td><code>clight publish (-t)</code></td><td>Publish project on PyPI, <code>-t</code> to test locally</td></tr><tr><td><code>clight remove (project)</code></td><td>Remove project</td></tr><tr><td><code>clight pypidel</code></td><td>Delete PyPI credentials</td></tr><tr><td><code>clight install</code></td><td>Test the installation process locally</td></tr><tr><td><code>clight update</code></td><td>Update local installation test</td></tr><tr><td><code>clight uninstall</code></td><td>Test the uninstallation process locally</td></tr></tbody></table></div>
+<div class="callout"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg><p><code>clight remove</code> only unregisters a project. It deletes the alias and the saved config, not your source files.</p></div><div class="pager"><a class="btn btn-ghost" href="#configuration" data-goto="configuration"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>Configuration</a><a class="btn btn-primary" href="#project-structure" data-goto="project-structure">Project structure<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="project-structure"><h1>Project structure</h1><p>A generated project keeps everything in a <code>.system</code> folder:</p>
+<pre><code data-lang="text" data-title="project layout">&lt;project-root&gt;/
+├── .system/
+│   ├── imports.py     all pip and custom-module imports
+│   ├── index.py       your CLI commands
+│   ├── modules/       custom modules (clight module &lt;name&gt;)
+│   └── sources/       resources and clight.json
+├── .gitignore
+├── README.md
+└── LICENSE            if you chose a license</code></pre>
+<div class="callout warn"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p>Don't remove <code>modules</code>, <code>sources</code>, <code>imports.py</code> or <code>index.py</code>. CLight depends on them.</p></div>
+<h2>index.py</h2><p>Every public method becomes a command. Files have three sections: <strong>Load</strong>, <strong>Main</strong> and <strong>Helpers</strong>. Keep the trailing <code># (args) - description</code> comment on each <code>def</code> line, because it builds the help text.</p>
+<pre><code data-lang="py" data-title=".system/index.py">from imports import *
+
+
+class index:
+    def demo(self, param=""):  # (param) - Test demo method with param
+        if not param:
+            return "Invalid param!"
+        cli.hint(param)
+        return self.__helper()
+
+    def __helper(self):
+        return jobs.test()</code></pre>
+<h2>imports.py</h2><p>Import pip modules <strong>only</strong> here. CLight scans this file at publish time to build <code>install_requires</code>.</p>
+<pre><code data-lang="py" data-title=".system/imports.py">from clight.system.importer import cli  # DON'T REMOVE THIS LINE
+
+import os
+import sys
+from modules.jobs import jobs</code></pre>
+<p>To pin a version, comment it at the top of the file:</p>
+<pre><code data-lang="py" data-title=".system/imports.py"># import openai==0:28
+
+import openai</code></pre>
+<p>If the pip package name differs from the import name, add the pip name as a comment and mark the real import with <code># !install</code>:</p>
+<pre><code data-lang="py" data-title=".system/imports.py"># import soupsieve
+
+from bs4 import BeautifulSoup  # !install</code></pre><div class="pager"><a class="btn btn-ghost" href="#commands" data-goto="commands"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>CLI commands</a><a class="btn btn-primary" href="#cli-api" data-goto="cli-api">The cli API<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="cli-api"><h1>The cli API</h1><p>The <code>cli</code> class is available in your index and module files through <code>from imports import *</code>. These are its basic methods:</p>
+<div class="table-wrap"><table><thead><tr><th>Method</th><th>Description</th></tr></thead><tbody><tr><td><code>cli.error("message")</code></td><td>Print an error message in red</td></tr><tr><td><code>cli.info("message")</code></td><td>Print an info message in blue</td></tr><tr><td><code>cli.hint("message")</code></td><td>Print a hint in yellow</td></tr><tr><td><code>cli.done("message")</code></td><td>Print a completion message in green</td></tr><tr><td><code>cli.trace("message")</code></td><td>Print hidden developer message, activate dev mode with <code>cli.dev = True</code></td></tr><tr><td><code>cli.input("hint")</code></td><td>Define CLI input field</td></tr><tr><td><code>cli.selection("hint", ["A", "B"])</code></td><td>Define selection input field</td></tr><tr><td><code>cli.selections("hint", ["A", "B"])</code></td><td>Define multiple selection input field</td></tr><tr><td><code>cli.confirmation("hint")</code></td><td>Define confirmation input field</td></tr><tr><td><code>cli.value("key", {...}, "default")</code></td><td>Get value from data</td></tr><tr><td><code>cli.sound("done")</code></td><td>Set system sound: start, ready, done, error, ask, set or unset</td></tr><tr><td><code>cli.speak("text")</code></td><td>Read text with voice</td></tr><tr><td><code>cli.listen()</code></td><td>Listen and convert speech to text</td></tr><tr><td><code>cli.read("Folder/file.txt")</code></td><td>Read file and get content</td></tr><tr><td><code>cli.write("Folder/file.txt", "content")</code></td><td>Write file with content</td></tr><tr><td><code>cli.append("Folder/file.txt", "content")</code></td><td>Append content to the file</td></tr><tr><td><code>cli.yaml("Folder/file.yaml")</code></td><td>Read and convert YAML file as dict</td></tr><tr><td><code>cli.template("content", {...})</code></td><td>Parse template content with given key-value pairs</td></tr><tr><td><code>cli.chars(10)</code></td><td>Get random characters with given length</td></tr><tr><td><code>cli.isValue(value)</code></td><td>Check if value exists</td></tr><tr><td><code>cli.isPath(path)</code></td><td>Check if path exists</td></tr><tr><td><code>cli.isFile(file)</code></td><td>Check if file exists</td></tr><tr><td><code>cli.isFolder(folder)</code></td><td>Check if folder exists</td></tr><tr><td><code>cli.command("cmd line")</code></td><td>Execute CMD command</td></tr><tr><td><code>cli.encrypt("data", "key")</code></td><td>Encrypt data by key</td></tr><tr><td><code>cli.decrypt("encrypted", "key")</code></td><td>Decrypt encrypted data by key</td></tr><tr><td><code>cli.filter("text")</code></td><td>Filter user text before printing</td></tr></tbody></table></div>
+<pre><code data-lang="py" data-title="example">name = cli.input("Project name")
+if cli.confirmation("Continue?"):
+    cli.done("Saved")</code></pre><div class="pager"><a class="btn btn-ghost" href="#project-structure" data-goto="project-structure"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>Project structure</a><a class="btn btn-primary" href="#publishing" data-goto="publishing">Publishing<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="publishing"><h1>Publishing</h1><p>PyPI only accepts a version number once, so bump it before each release: navigate to your project's root in CMD, run <code>clight version</code>, and choose the type of change.</p>
+<h2>Local</h2><ol><li>In your project's root directory, run <code>clight publish</code>.</li><li>The first time, enter your PyPI <code>PYPI_USERNAME</code> and <code>PYPI_API_TOKEN</code>.</li><li>Choose whether to save them. If you do, provide a <strong>Password Key</strong> to encrypt them.</li><li>Next time you will only be asked for the Password Key. Use <code>clight pypidel</code> to delete saved credentials.</li></ol>
+<h2>GitHub and GitLab</h2><p>Nothing to do except push your changes to the main branch.</p>
+<div class="callout warn"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><p>Add <code>PYPI_USERNAME</code> and <code>PYPI_API_TOKEN</code> as repository secure variables in GitHub or GitLab.</p></div>
+<p>Generated GitHub projects ship a workflow that skips deployment when the commit message contains <code>[!deploy]</code>. Use <code>clight publish -t</code> to test the package locally first.</p>
+<h2>Semantic versions</h2><p>Versions follow <code>MAJOR.MINOR.PATCH</code>, with optional <code>alpha</code>, <code>beta</code> or <code>rc</code> pre-release stages. <code>clight version</code> asks for the change type, and you can also pass a number directly.</p><div class="pager"><a class="btn btn-ghost" href="#cli-api" data-goto="cli-api"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>The cli API</a><a class="btn btn-primary" href="#requirements" data-goto="requirements">System requirements<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="requirements"><h1>System requirements</h1><h2>Running CLight</h2>
+<div class="table-wrap"><table><thead><tr><th>Item</th><th>Requirement</th></tr></thead><tbody><tr><td>Operating system</td><td>Microsoft Windows</td></tr><tr><td>Language</td><td>Python 3, with pip</td></tr><tr><td>Shell</td><td>CMD (run as administrator for the first install)</td></tr><tr><td>Python packages</td><td>PyYAML, pygame, pyttsx3, inquirer, colored, cryptography, SpeechRecognition (installed automatically)</td></tr></tbody></table></div>
+<h2>Publishing</h2><ul><li>A PyPI account and API token</li><li>For GitHub or GitLab projects, the <code>PYPI_USERNAME</code> and <code>PYPI_API_TOKEN</code> repository secrets</li></ul>
+<h2>Building from source</h2><ul><li>Clone <a href="https://github.com/IG-onGit/CLight" rel="noopener">the repository</a></li><li>Python 3 with <code>setuptools</code>, as the project is packaged with <code>setup.py</code></li></ul><div class="pager"><a class="btn btn-ghost" href="#publishing" data-goto="publishing"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>Publishing</a><a class="btn btn-primary" href="#license" data-goto="license">License<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="license"><h1>License</h1><p>CLight is released under the MIT License. In plain English: you may use, copy, modify, merge, publish, distribute, sublicense and sell it for free, as long as you keep the copyright and license notice. It comes with no warranty.</p>
+<div class="license-box" tabindex="0" role="region" aria-label="Full license text">MIT License
+
+Copyright (c) 2025 Irakli Gzirishvili
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</div>
+<a class="btn btn-ghost" href="https://github.com/IG-onGit/CLight/blob/main/LICENSE" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>View LICENSE on GitHub</a><div class="pager"><a class="btn btn-ghost" href="#requirements" data-goto="requirements"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>System requirements</a><a class="btn btn-primary" href="#author" data-goto="author">About the author<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a></div></article>
+<article class="doc-section" id="author"><h1>About the author</h1><div class="author-card"><img src="../assets/Irakli%20Gzirishvili.png" width="112" height="112" alt="Portrait of Irakli Gzirishvili">
+<div><h2 style="margin:0">Irakli Gzirishvili</h2><p style="margin:4px 0 0;color:var(--muted)">Full-Stack Software Engineer, MIT OSS provider, AI Integration manager, cloud engineer and DevOps engineer from Georgia</p>
+<div class="links"><a class="btn btn-ghost btn-sm" href="https://github.com/IG-onGit" rel="noopener me"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg>github.com/IG-onGit</a><a class="btn btn-ghost btn-sm" href="https://www.linkedin.com/in/ig-link" rel="noopener me"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg>LinkedIn</a><a class="btn btn-ghost btn-sm" href="https://x.com/IG_onX" rel="noopener me"><svg class="icon" aria-hidden="true"><use href="#i-twitter-x"/></svg>X</a><a class="btn btn-ghost btn-sm" href="https://www.linkedin.com/newsletters/creatron-7275978973124132864" rel="noopener me"><svg class="icon" aria-hidden="true"><use href="#i-book"/></svg>CreaTron newsletter</a></div></div></div><div class="pager"><a class="btn btn-ghost" href="#license" data-goto="license"><svg class="icon" aria-hidden="true"><use href="#i-arrow-l"/></svg>License</a></div></article>
+</main>
+</div>
+<footer class="site-footer"><div class="container">
+<p>Copyright (c) 2025 Irakli Gzirishvili. Released under the <a href="../docs/#license">MIT License</a>.</p>
+<nav aria-label="Footer"><a href="../docs/">Documentation</a><a href="../docs/#requirements">Requirements</a><a href="../docs/#license">License</a><a href="https://github.com/IG-onGit/CLight" rel="noopener">GitHub</a></nav>
+</div></footer>
+<script src="../assets/main.js" defer></script>
+</body>
+</html>
